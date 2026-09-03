@@ -1,0 +1,41 @@
+@if (product(); as p) {
+  <div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+        <li class="breadcrumb-item"><a routerLink="/products">Shop</a></li>
+        <li class="breadcrumb-item active">{{ p.name }}</li>
+      </ol>
+    </nav>
+
+    <div class="row g-5">
+      <div class="col-md-6">
+        <img [src]="p.pictureUrl" class="img-fluid rounded shadow-sm" [alt]="p.name" onerror="this.src='/assets/no-image.png'" />
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-2">
+          <span class="badge bg-light text-dark border me-1">{{ p.productBrand }}</span>
+          <span class="badge bg-light text-dark border">{{ p.productType }}</span>
+        </div>
+        <h1 class="h2">{{ p.name }}</h1>
+        <div class="fs-3 fw-bold text-primary mb-3">{{ p.price | currency }}</div>
+        <p class="text-muted">{{ p.description }}</p>
+
+        <div class="d-flex align-items-center gap-3 mt-4">
+          <div class="input-group" style="max-width: 140px;">
+            <button class="btn btn-outline-secondary" (click)="decrement()">-</button>
+            <input type="text" class="form-control text-center" [value]="quantity()" readonly />
+            <button class="btn btn-outline-secondary" (click)="increment()">+</button>
+          </div>
+
+          <button class="btn btn-primary btn-lg flex-grow-1" (click)="addToCart()">
+            <i class="fas fa-cart-plus me-2"></i>Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="container py-5 text-center text-muted">Loading...</div>
+}
