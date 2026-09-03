@@ -1,0 +1,99 @@
+<div class="container py-4">
+  <div class="row g-4">
+    <div class="col-lg-3">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Filters</h5>
+
+          <div class="mb-3">
+            <label class="form-label small text-muted">Search</label>
+            <input type="text" class="form-control" placeholder="Search products..."
+                   [(ngModel)]="query.searchValue" (ngModelChange)="onFilterChange()" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small text-muted">Brand</label>
+            <select class="form-select" [(ngModel)]="query.brandId" (ngModelChange)="onFilterChange()">
+              <option [ngValue]="null">All Brands</option>
+              @for (brand of brands(); track brand.id) {
+                <option [ngValue]="brand.id">{{ brand.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small text-muted">Type</label>
+            <select class="form-select" [(ngModel)]="query.typeId" (ngModelChange)="onFilterChange()">
+              <option [ngValue]="null">All Types</option>
+              @for (type of types(); track type.id) {
+                <option [ngValue]="type.id">{{ type.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small text-muted">Sort By</label>
+            <select class="form-select" [(ngModel)]="query.sort" (ngModelChange)="onFilterChange()">
+              <option [ngValue]="0">Default</option>
+              <option [ngValue]="1">Name: A to Z</option>
+              <option [ngValue]="2">Name: Z to A</option>
+              <option [ngValue]="3">Price: Low to High</option>
+              <option [ngValue]="4">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-9">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">{{ totalCount() }} Products</h4>
+      </div>
+
+      <div class="row g-4">
+        @for (product of products(); track product.id) {
+          <div class="col-6 col-md-4 col-xl-3">
+            <a class="text-decoration-none text-dark" [routerLink]="['/products', product.id]">
+              <div class="card h-100 product-card shadow-sm">
+                <img [src]="product.pictureUrl" class="card-img-top product-image" [alt]="product.name" onerror="this.src='/assets/no-image.png'" />
+                <div class="card-body d-flex flex-column">
+                  <h6 class="card-title">{{ product.name }}</h6>
+                  <div class="text-muted small mb-2">{{ product.productBrand }} &middot; {{ product.productType }}</div>
+                  <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <span class="fw-bold text-primary">{{ product.price | currency }}</span>
+                    <button class="btn btn-sm btn-primary" (click)="addToCart(product, $event)">
+                      <i class="fas fa-cart-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        } @empty {
+          <div class="col-12 text-center text-muted py-5">
+            <i class="fas fa-box-open fa-2x mb-2"></i>
+            <p>No products match your filters.</p>
+          </div>
+        }
+      </div>
+
+      @if (totalPages > 1) {
+        <nav class="mt-4">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="query.pageIndex === 1">
+              <button class="page-link" (click)="goToPage((query.pageIndex ?? 1) - 1)">Previous</button>
+            </li>
+            @for (page of [].constructor(totalPages); track $index) {
+              <li class="page-item" [class.active]="query.pageIndex === $index + 1">
+                <button class="page-link" (click)="goToPage($index + 1)">{{ $index + 1 }}</button>
+              </li>
+            }
+            <li class="page-item" [class.disabled]="query.pageIndex === totalPages">
+              <button class="page-link" (click)="goToPage((query.pageIndex ?? 1) + 1)">Next</button>
+            </li>
+          </ul>
+        </nav>
+      }
+    </div>
+  </div>
+</div>
