@@ -1,0 +1,63 @@
+<div class="container py-5">
+  <h2 class="mb-4">Your Cart</h2>
+
+  @if (basket.basket(); as b) {
+    @if (b.items.length > 0) {
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Product</th>
+              <th>Price</th>
+              <th style="width: 140px;">Quantity</th>
+              <th class="text-end">Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of b.items; track item.id) {
+              <tr>
+                <td>
+                  <img [src]="item.pictureUrl" [alt]="item.productName" style="width: 60px; height: 60px; object-fit: contain;" onerror="this.src='/assets/no-image.png'" />
+                </td>
+                <td>{{ item.productName }}</td>
+                <td>{{ item.price | currency }}</td>
+                <td>
+                  <input type="number" min="1" class="form-control" [value]="item.quantity"
+                         (change)="updateQuantity(item, $any($event.target).value)" />
+                </td>
+                <td class="text-end fw-semibold">{{ item.price * item.quantity | currency }}</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-danger" (click)="removeItem(item)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <div class="card shadow-sm" style="max-width: 320px; width: 100%;">
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="text-muted">Subtotal</span>
+              <span class="fw-semibold">{{ basket.subTotal() | currency }}</span>
+            </div>
+            <a routerLink="/checkout" class="btn btn-primary w-100 mt-2">
+              Proceed to Checkout <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    } @else {
+      <div class="text-center text-muted py-5">
+        <i class="fas fa-cart-shopping fa-2x mb-2"></i>
+        <p>Your cart is empty.</p>
+        <a routerLink="/products" class="btn btn-primary">Start Shopping</a>
+      </div>
+    }
+  }
+</div>
