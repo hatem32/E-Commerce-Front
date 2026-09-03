@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+
+body {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background-color: #f8f9fa;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #4f46e5, #06b6d4);
+}
+
+.product-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border: none;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.product-image {
+  height: 180px;
+  object-fit: contain;
+  padding: 1rem;
+  background: #fff;
+}
