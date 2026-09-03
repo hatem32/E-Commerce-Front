@@ -1,0 +1,99 @@
+@if (order(); as o) {
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">Order #{{ o.id.substring(0, 8) }}</h2>
+      <a routerLink="/orders" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-1"></i> Back to Orders
+      </a>
+    </div>
+
+    <div class="alert alert-success" role="alert">
+      <i class="fas fa-circle-check me-2"></i>Thank you! Your order has been placed successfully.
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Items</h5>
+            <table class="table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Qty</th>
+                  <th class="text-end">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of o.items; track item.productId) {
+                  <tr>
+                    <td>
+                      <img [src]="item.pictureUrl" [alt]="item.productName" style="width: 50px; height: 50px; object-fit: contain;" onerror="this.src='/assets/no-image.png'" />
+                    </td>
+                    <td>{{ item.productName }}</td>
+                    <td>{{ item.price | currency }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td class="text-end">{{ item.price * item.quantity | currency }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+
+            <hr />
+
+            <div class="d-flex justify-content-end">
+              <table class="table table-borderless table-sm mb-0" style="max-width: 280px;">
+                <tbody>
+                  <tr>
+                    <td class="text-muted">Subtotal</td>
+                    <td class="text-end">{{ o.subTotal | currency }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted">Delivery ({{ o.deliveryMethod }})</td>
+                    <td class="text-end">{{ o.deliveryCost | currency }}</td>
+                  </tr>
+                  <tr class="fw-bold fs-5">
+                    <td>Total</td>
+                    <td class="text-end">{{ o.total | currency }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Shipping Address</h5>
+            <p class="mb-1 fw-semibold">{{ o.shipToAddress.firstName }} {{ o.shipToAddress.lastName }}</p>
+            <p class="mb-0 text-muted">{{ o.shipToAddress.street }}<br />{{ o.shipToAddress.city }}, {{ o.shipToAddress.country }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Order Info</h5>
+            <table class="table table-sm table-borderless mb-0">
+              <tbody>
+                <tr>
+                  <td class="text-muted">Date</td>
+                  <td>{{ o.orderDate | date: 'medium' }}</td>
+                </tr>
+                <tr>
+                  <td class="text-muted">Status</td>
+                  <td><span class="badge bg-secondary">{{ o.status }}</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="container py-5 text-center text-muted">Loading...</div>
+}
