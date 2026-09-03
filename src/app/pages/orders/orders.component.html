@@ -1,0 +1,42 @@
+<div class="container py-5">
+  <h2 class="mb-4">My Orders</h2>
+
+  @if (orders().length > 0) {
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Status</th>
+            <th class="text-end">Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of orders(); track order.id) {
+            <tr>
+              <td class="font-monospace small">#{{ order.id.substring(0, 8) }}</td>
+              <td>{{ order.orderDate | date: 'medium' }}</td>
+              <td>{{ order.items.length }}</td>
+              <td><span class="badge bg-secondary">{{ order.status }}</span></td>
+              <td class="text-end fw-semibold">{{ order.total | currency }}</td>
+              <td>
+                <a class="btn btn-sm btn-outline-secondary" [routerLink]="['/orders', order.id]">
+                  <i class="fas fa-eye"></i>
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="text-center text-muted py-5">
+      <i class="fas fa-receipt fa-2x mb-2"></i>
+      <p>You haven't placed any orders yet.</p>
+      <a routerLink="/products" class="btn btn-primary">Start Shopping</a>
+    </div>
+  }
+</div>
