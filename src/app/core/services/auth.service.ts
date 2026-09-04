@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { CurrentUser, LoginDto, RegisterDto, UserDto } from '../models/auth.model';
+import { BasketService } from './basket.service';
 
 const TOKEN_KEY = 'ecommerce_token';
 const USER_KEY = 'ecommerce_user';
@@ -16,10 +17,16 @@ const ROLE_CLAIM = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private basketService = inject(BasketService);
 
   private userSignal = signal<CurrentUser | null>(this.readUserFromStorage());
   currentUser = computed(() => this.userSignal());
   isLoggedIn = computed(() => this.userSignal() !== null);
+
+  constructor() {
+    // Scope (or clear) the cart to whoever is logged in right from app startup.
+    this.basketService.setUser(this.userSignal()?.email ?? null);
+  }
 
   login(dto: LoginDto): Observable<UserDto> {
     return this.http.post<UserDto>(`${environment.apiUrl}/authentication/login`, dto).pipe(
@@ -37,6 +44,7 @@ export class AuthService {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     this.userSignal.set(null);
+    this.basketService.setUser(null);
     this.router.navigateByUrl('/');
   }
 
@@ -45,13 +53,26 @@ export class AuthService {
   }
 
   /** Call right after login/register: sends admins to the MVC dashboard instead of the storefront. */
-  redirectAfterLogin(): void {
+  redirectAfterLogin(returnUrl?: string): void {
     const user = this.userSignal();
     if (user?.isAdmin) {
       window.location.href = environment.adminDashboardUrl;
     } else {
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl(returnUrl || '/');
     }
+  }
+
+  /**
+   * Guard for actions that require login (e.g. adding to cart) without a full route guard.
+   * Returns true if already logged in; otherwise redirects to /login and returns false.
+   */
+  requireLogin(returnUrl: string): boolean {
+    if (this.isLoggedIn()) {
+      return true;
+    }
+
+    this.router.navigate(['/login'], { queryParams: { returnUrl } });
+    return false;
   }
 
   private setSession(user: UserDto): void {
@@ -61,6 +82,7 @@ export class AuthService {
     localStorage.setItem(TOKEN_KEY, user.token);
     localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
     this.userSignal.set(currentUser);
+    this.basketService.setUser(currentUser.email);
   }
 
   private hasAdminRole(token: string): boolean {

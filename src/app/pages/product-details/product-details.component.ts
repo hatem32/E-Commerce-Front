@@ -1,8 +1,9 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { BasketService } from '../../core/services/basket.service';
+import { AuthService } from '../../core/services/auth.service';
 import { ProductDto } from '../../core/models/product.model';
 
 @Component({
@@ -13,7 +14,9 @@ import { ProductDto } from '../../core/models/product.model';
 })
 export class ProductDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private productService = inject(ProductService);
+  private auth = inject(AuthService);
   basket = inject(BasketService);
 
   product = signal<ProductDto | null>(null);
@@ -34,8 +37,12 @@ export class ProductDetailsComponent implements OnInit {
 
   addToCart(): void {
     const product = this.product();
-    if (product) {
-      this.basket.addItem(product, this.quantity());
+    if (!product) return;
+
+    if (!this.auth.requireLogin(this.router.url)) {
+      return;
     }
+
+    this.basket.addItem(product, this.quantity());
   }
 }

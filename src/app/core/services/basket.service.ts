@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { BasketDto, BasketItemDto } from '../models/basket.model';
 import { ProductDto } from '../models/product.model';
 
-const BASKET_ID_KEY = 'ecommerce_basket_id';
+const BASKET_ID_PREFIX = 'ecommerce_basket_id';
 
 function generateBasketId(): string {
   return crypto.randomUUID();
@@ -16,6 +16,10 @@ export class BasketService {
   private http = inject(HttpClient);
   private baseUrl = `${environment.apiUrl}/baskets`;
 
+  // Scopes the basket to whoever is currently logged in, so switching accounts
+  // on the same browser never shows one user's cart to another.
+  private currentUserEmail: string | null = null;
+
   private basketSignal = signal<BasketDto | null>(null);
   basket = computed(() => this.basketSignal());
   itemCount = computed(() =>
@@ -25,13 +29,33 @@ export class BasketService {
     this.basketSignal()?.items.reduce((sum, i) => sum + i.quantity * i.price, 0) ?? 0
   );
 
+  /** Called by AuthService on login/logout/app startup. */
+  setUser(email: string | null): void {
+    this.currentUserEmail = email;
+
+    if (email) {
+      this.loadBasket();
+    } else {
+      // Logged out - there is no cart to show until someone logs in again.
+      this.basketSignal.set(null);
+    }
+  }
+
   get basketId(): string {
-    let id = localStorage.getItem(BASKET_ID_KEY);
+    const key = this.storageKey;
+    let id = localStorage.getItem(key);
     if (!id) {
       id = generateBasketId();
-      localStorage.setItem(BASKET_ID_KEY, id);
+      localStorage.setItem(key, id);
     }
     return id;
+  }
+
+  private get storageKey(): string {
+    if (!this.currentUserEmail) {
+      throw new Error('BasketService used before a user was set. Cart requires login.');
+    }
+    return `${BASKET_ID_PREFIX}_${this.currentUserEmail}`;
   }
 
   loadBasket(): void {
@@ -90,7 +114,7 @@ export class BasketService {
 
   clearBasket(): void {
     this.http.delete(`${this.baseUrl}/${this.basketId}`).subscribe();
-    localStorage.removeItem(BASKET_ID_KEY);
+    localStorage.removeItem(this.storageKey);
     this.basketSignal.set({ id: this.basketId, items: [] });
   }
 

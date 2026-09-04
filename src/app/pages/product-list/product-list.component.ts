@@ -1,9 +1,10 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { BasketService } from '../../core/services/basket.service';
+import { AuthService } from '../../core/services/auth.service';
 import { BrandDto, ProductDto, ProductQueryParams, TypeDto } from '../../core/models/product.model';
 
 @Component({
@@ -14,6 +15,8 @@ import { BrandDto, ProductDto, ProductQueryParams, TypeDto } from '../../core/mo
 })
 export class ProductListComponent implements OnInit {
   private productService = inject(ProductService);
+  private auth = inject(AuthService);
+  private router = inject(Router);
   basket = inject(BasketService);
 
   products = signal<ProductDto[]>([]);
@@ -55,6 +58,11 @@ export class ProductListComponent implements OnInit {
   addToCart(product: ProductDto, event: Event): void {
     event.preventDefault();
     event.stopPropagation();
+
+    if (!this.auth.requireLogin(this.router.url)) {
+      return;
+    }
+
     this.basket.addItem(product);
   }
 }
