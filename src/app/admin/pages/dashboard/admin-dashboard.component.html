@@ -1,0 +1,44 @@
+<h1 class="h3 mb-4">Overview</h1>
+
+<div class="row g-3">
+  <div class="col-md-6 col-xl-3">
+    <a routerLink="/admin/products" class="text-decoration-none">
+      <div class="admin-stat-card" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+        <div class="fs-2 fw-bold">{{ productsCount() }}</div>
+        <div>Products</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <a routerLink="/admin/brands" class="text-decoration-none">
+      <div class="admin-stat-card" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+        <div class="fs-2 fw-bold">{{ brandsCount() }}</div>
+        <div>Brands</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <a routerLink="/admin/types" class="text-decoration-none">
+      <div class="admin-stat-card" style="background: linear-gradient(135deg, #10b981, #059669);">
+        <div class="fs-2 fw-bold">{{ typesCount() }}</div>
+        <div>Types</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <a routerLink="/admin/orders" class="text-decoration-none">
+      <div class="admin-stat-card" style="background: linear-gradient(135deg, #ec4899, #db2777);">
+        <div class="fs-2 fw-bold">{{ ordersCount() }}</div>
+        <div>Orders</div>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-6 col-xl-3">
+    <a routerLink="/admin/users" class="text-decoration-none">
+      <div class="admin-stat-card" style="background: linear-gradient(135deg, #4f46e5, #6366f1);">
+        <div class="fs-2 fw-bold">{{ usersCount() }}</div>
+        <div>Users</div>
+      </div>
+    </a>
+  </div>
+</div>

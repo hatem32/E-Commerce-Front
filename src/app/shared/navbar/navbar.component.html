@@ -42,6 +42,9 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item" routerLink="/orders">My Orders</a></li>
+              @if (auth.currentUser()?.isAdmin) {
+                <li><a class="dropdown-item" routerLink="/admin"><i class="fas fa-gauge-high me-1"></i>Admin Panel</a></li>
+              }
               <li><hr class="dropdown-divider" /></li>
               <li><button class="dropdown-item" (click)="logout()">Logout</button></li>
             </ul>

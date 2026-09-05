@@ -9,9 +9,9 @@ import { BasketService } from './basket.service';
 const TOKEN_KEY = 'ecommerce_token';
 const USER_KEY = 'ecommerce_user';
 
-// This is the standard System.Security.Claims.ClaimTypes.Role URI - it's what
-// the API's TokenService actually puts in the JWT (not a plain "role" key).
-const ROLE_CLAIM = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role';
+// This is the actual URI .NET's ClaimTypes.Role serializes to in the JWT
+// (schemas.microsoft.com) - NOT the xmlsoap.org one used for Email/Name.
+const ROLE_CLAIM = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -52,11 +52,11 @@ export class AuthService {
     return localStorage.getItem(TOKEN_KEY);
   }
 
-  /** Call right after login/register: sends admins to the MVC dashboard instead of the storefront. */
+  /** Call right after login/register: sends admins to the built-in admin panel. */
   redirectAfterLogin(returnUrl?: string): void {
     const user = this.userSignal();
     if (user?.isAdmin) {
-      window.location.href = environment.adminDashboardUrl;
+      this.router.navigateByUrl('/admin');
     } else {
       this.router.navigateByUrl(returnUrl || '/');
     }

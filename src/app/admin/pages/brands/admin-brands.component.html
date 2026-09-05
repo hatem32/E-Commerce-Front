@@ -1,0 +1,46 @@
+<h1 class="h3 mb-4">Brands</h1>
+
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="admin-card">
+      <h5 class="mb-3">Add Brand</h5>
+      <div class="input-group">
+        <input class="form-control" placeholder="e.g. Nike" [(ngModel)]="newName" (keyup.enter)="add()" />
+        <button class="btn btn-primary" (click)="add()"><i class="fas fa-plus"></i></button>
+      </div>
+      @if (errorMessage()) {
+        <div class="text-danger small mt-2">{{ errorMessage() }}</div>
+      }
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="admin-card">
+      <table class="table align-middle mb-0">
+        <tbody>
+          @for (brand of brands(); track brand.id) {
+            <tr>
+              <td>
+                @if (editingId() === brand.id) {
+                  <input class="form-control form-control-sm" [(ngModel)]="editingName" (keyup.enter)="saveEdit(brand.id)" />
+                } @else {
+                  {{ brand.name }}
+                }
+              </td>
+              <td class="text-end" style="width: 140px;">
+                @if (editingId() === brand.id) {
+                  <button class="btn btn-sm btn-success" (click)="saveEdit(brand.id)"><i class="fas fa-check"></i></button>
+                } @else {
+                  <button class="btn btn-sm btn-outline-warning" (click)="startEdit(brand)"><i class="fas fa-pen"></i></button>
+                }
+                <button class="btn btn-sm btn-outline-danger" (click)="delete(brand)"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td class="text-muted text-center py-3">No brands yet.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

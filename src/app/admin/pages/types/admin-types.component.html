@@ -1,0 +1,46 @@
+<h1 class="h3 mb-4">Types</h1>
+
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="admin-card">
+      <h5 class="mb-3">Add Type</h5>
+      <div class="input-group">
+        <input class="form-control" placeholder="e.g. Electronics" [(ngModel)]="newName" (keyup.enter)="add()" />
+        <button class="btn btn-primary" (click)="add()"><i class="fas fa-plus"></i></button>
+      </div>
+      @if (errorMessage()) {
+        <div class="text-danger small mt-2">{{ errorMessage() }}</div>
+      }
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="admin-card">
+      <table class="table align-middle mb-0">
+        <tbody>
+          @for (type of types(); track type.id) {
+            <tr>
+              <td>
+                @if (editingId() === type.id) {
+                  <input class="form-control form-control-sm" [(ngModel)]="editingName" (keyup.enter)="saveEdit(type.id)" />
+                } @else {
+                  {{ type.name }}
+                }
+              </td>
+              <td class="text-end" style="width: 140px;">
+                @if (editingId() === type.id) {
+                  <button class="btn btn-sm btn-success" (click)="saveEdit(type.id)"><i class="fas fa-check"></i></button>
+                } @else {
+                  <button class="btn btn-sm btn-outline-warning" (click)="startEdit(type)"><i class="fas fa-pen"></i></button>
+                }
+                <button class="btn btn-sm btn-outline-danger" (click)="delete(type)"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          } @empty {
+            <tr><td class="text-muted text-center py-3">No types yet.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

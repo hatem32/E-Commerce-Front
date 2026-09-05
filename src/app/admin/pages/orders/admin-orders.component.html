@@ -1,0 +1,40 @@
+<h1 class="h3 mb-4">Orders</h1>
+
+<div class="admin-card">
+  @if (orders().length > 0) {
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Buyer</th>
+          <th>Date</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th style="width: 220px;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of orders(); track order.id) {
+          <tr>
+            <td class="font-monospace small">#{{ order.id.substring(0, 8) }}</td>
+            <td>{{ order.buyerEmail }}</td>
+            <td>{{ order.orderDate | date: 'medium' }}</td>
+            <td>{{ order.items.length }}</td>
+            <td class="fw-semibold">{{ order.total | currency }}</td>
+            <td>
+              <select class="form-select form-select-sm" [ngModel]="order.status"
+                      (ngModelChange)="changeStatus(order, $event)"
+                      [disabled]="updatingId() === order.id">
+                @for (status of statuses; track status) {
+                  <option [value]="status">{{ status }}</option>
+                }
+              </select>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @else {
+    <p class="text-muted text-center py-4 mb-0">No orders yet.</p>
+  }
+</div>

@@ -1,0 +1,72 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">{{ isEdit ? 'Edit Product' : 'Add Product' }}</h1>
+  <a routerLink="/admin/products" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i> Back</a>
+</div>
+
+<div class="admin-card" style="max-width: 720px;">
+  <form (ngSubmit)="submit()">
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input class="form-control" [(ngModel)]="model.name" name="name" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" rows="3" [(ngModel)]="model.description" name="description" required></textarea>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Brand</label>
+        <select class="form-select" [(ngModel)]="model.brandId" name="brandId" required>
+          <option [ngValue]="0">-- Select Brand --</option>
+          @for (brand of brands(); track brand.id) {
+            <option [ngValue]="brand.id">{{ brand.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Type</label>
+        <select class="form-select" [(ngModel)]="model.typeId" name="typeId" required>
+          <option [ngValue]="0">-- Select Type --</option>
+          @for (type of types(); track type.id) {
+            <option [ngValue]="type.id">{{ type.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Price</label>
+      <input type="number" step="0.01" min="0.01" class="form-control" style="max-width:220px;" [(ngModel)]="model.price" name="price" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Product Image</label>
+      <div class="image-upload-box" (click)="fileInput.click()">
+        @if (imagePreviewUrl()) {
+          <img [src]="imagePreviewUrl()" alt="Preview" />
+        } @else {
+          <div class="upload-placeholder">
+            <i class="fas fa-cloud-arrow-up"></i>
+            <div>Click to choose an image</div>
+          </div>
+        }
+      </div>
+      <input #fileInput type="file" accept="image/*" class="d-none" (change)="onFileSelected($event)" />
+    </div>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger">{{ errorMessage() }}</div>
+    }
+
+    <button type="submit" class="btn btn-primary" [disabled]="saving() || uploadingImage()">
+      @if (saving() || uploadingImage()) {
+        <span class="spinner-border spinner-border-sm me-2"></span>
+      }
+      {{ isEdit ? 'Update Product' : 'Save Product' }}
+    </button>
+    <a routerLink="/admin/products" class="btn btn-outline-secondary">Cancel</a>
+  </form>
+</div>

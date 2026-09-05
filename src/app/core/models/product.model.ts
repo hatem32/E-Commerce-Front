@@ -4,6 +4,8 @@ export interface ProductDto {
   description: string;
   pictureUrl: string;
   price: number;
+  brandId: number;
+  typeId: number;
   productBrand: string;
   productType: string;
 }
