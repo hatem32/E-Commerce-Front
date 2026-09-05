@@ -24,6 +24,18 @@
       </ul>
 
       <ul class="navbar-nav align-items-lg-center">
+        @if (auth.isLoggedIn()) {
+          <li class="nav-item me-2">
+            <a class="btn btn-outline-light position-relative" routerLink="/wishlist">
+              <i class="fas fa-heart"></i>
+              @if (wishlist.count() > 0) {
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {{ wishlist.count() }}
+                </span>
+              }
+            </a>
+          </li>
+        }
         <li class="nav-item me-2">
           <a class="btn btn-outline-light position-relative" routerLink="/cart">
             <i class="fas fa-cart-shopping"></i>

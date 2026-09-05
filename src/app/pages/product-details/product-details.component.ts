@@ -3,6 +3,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { BasketService } from '../../core/services/basket.service';
+import { WishlistService } from '../../core/services/wishlist.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ProductDto } from '../../core/models/product.model';
 
@@ -18,6 +19,7 @@ export class ProductDetailsComponent implements OnInit {
   private productService = inject(ProductService);
   private auth = inject(AuthService);
   basket = inject(BasketService);
+  wishlist = inject(WishlistService);
 
   product = signal<ProductDto | null>(null);
   quantity = signal(1);
@@ -44,5 +46,16 @@ export class ProductDetailsComponent implements OnInit {
     }
 
     this.basket.addItem(product, this.quantity());
+  }
+
+  toggleWishlist(): void {
+    const product = this.product();
+    if (!product) return;
+
+    if (!this.auth.requireLogin(this.router.url)) {
+      return;
+    }
+
+    this.wishlist.toggle(product.id);
   }
 }

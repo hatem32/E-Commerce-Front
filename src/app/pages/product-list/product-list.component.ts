@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { BasketService } from '../../core/services/basket.service';
+import { WishlistService } from '../../core/services/wishlist.service';
 import { AuthService } from '../../core/services/auth.service';
 import { BrandDto, ProductDto, ProductQueryParams, TypeDto } from '../../core/models/product.model';
 
@@ -18,6 +19,7 @@ export class ProductListComponent implements OnInit {
   private auth = inject(AuthService);
   private router = inject(Router);
   basket = inject(BasketService);
+  wishlist = inject(WishlistService);
 
   products = signal<ProductDto[]>([]);
   brands = signal<BrandDto[]>([]);
@@ -64,5 +66,16 @@ export class ProductListComponent implements OnInit {
     }
 
     this.basket.addItem(product);
+  }
+
+  toggleWishlist(product: ProductDto, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!this.auth.requireLogin(this.router.url)) {
+      return;
+    }
+
+    this.wishlist.toggle(product.id);
   }
 }

@@ -5,6 +5,7 @@ import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { CurrentUser, LoginDto, RegisterDto, UserDto } from '../models/auth.model';
 import { BasketService } from './basket.service';
+import { WishlistService } from './wishlist.service';
 
 const TOKEN_KEY = 'ecommerce_token';
 const USER_KEY = 'ecommerce_user';
@@ -18,14 +19,17 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
   private basketService = inject(BasketService);
+  private wishlistService = inject(WishlistService);
 
   private userSignal = signal<CurrentUser | null>(this.readUserFromStorage());
   currentUser = computed(() => this.userSignal());
   isLoggedIn = computed(() => this.userSignal() !== null);
 
   constructor() {
-    // Scope (or clear) the cart to whoever is logged in right from app startup.
-    this.basketService.setUser(this.userSignal()?.email ?? null);
+    // Scope (or clear) the cart and wishlist to whoever is logged in right from app startup.
+    const email = this.userSignal()?.email ?? null;
+    this.basketService.setUser(email);
+    this.wishlistService.setUser(email);
   }
 
   login(dto: LoginDto): Observable<UserDto> {
@@ -45,6 +49,7 @@ export class AuthService {
     localStorage.removeItem(USER_KEY);
     this.userSignal.set(null);
     this.basketService.setUser(null);
+    this.wishlistService.setUser(null);
     this.router.navigateByUrl('/');
   }
 
@@ -83,6 +88,7 @@ export class AuthService {
     localStorage.setItem(USER_KEY, JSON.stringify(currentUser));
     this.userSignal.set(currentUser);
     this.basketService.setUser(currentUser.email);
+    this.wishlistService.setUser(currentUser.email);
   }
 
   private hasAdminRole(token: string): boolean {

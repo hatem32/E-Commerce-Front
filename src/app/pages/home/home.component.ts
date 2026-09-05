@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { ProductDto } from '../../core/models/product.model';
 import { BasketService } from '../../core/services/basket.service';
+import { WishlistService } from '../../core/services/wishlist.service';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit {
   private auth = inject(AuthService);
   private router = inject(Router);
   basket = inject(BasketService);
+  wishlist = inject(WishlistService);
 
   featuredProducts = signal<ProductDto[]>([]);
 
@@ -34,5 +36,16 @@ export class HomeComponent implements OnInit {
     }
 
     this.basket.addItem(product);
+  }
+
+  toggleWishlist(product: ProductDto, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!this.auth.requireLogin(this.router.url)) {
+      return;
+    }
+
+    this.wishlist.toggle(product.id);
   }
 }
