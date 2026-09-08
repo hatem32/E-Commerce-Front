@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { CurrentUser, LoginDto, RegisterDto, UserDto } from '../models/auth.model';
+import { CurrentUser, LoginDto, RegisterDto, RegisterResultDto, UserDto, VerifyOtpDto } from '../models/auth.model';
 import { BasketService } from './basket.service';
 import { WishlistService } from './wishlist.service';
 
@@ -38,10 +38,19 @@ export class AuthService {
     );
   }
 
-  register(dto: RegisterDto): Observable<UserDto> {
-    return this.http.post<UserDto>(`${environment.apiUrl}/authentication/register`, dto).pipe(
+  register(dto: RegisterDto): Observable<RegisterResultDto> {
+    // No session/token yet - the account isn't usable until the OTP is verified.
+    return this.http.post<RegisterResultDto>(`${environment.apiUrl}/authentication/register`, dto);
+  }
+
+  verifyOtp(dto: VerifyOtpDto): Observable<UserDto> {
+    return this.http.post<UserDto>(`${environment.apiUrl}/authentication/verify-otp`, dto).pipe(
       tap(user => this.setSession(user))
     );
+  }
+
+  resendOtp(email: string): Observable<void> {
+    return this.http.post<void>(`${environment.apiUrl}/authentication/resend-otp`, { email });
   }
 
   logout(): void {

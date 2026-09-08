@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../../core/services/product.service';
 import { AdminProductService } from '../../core/services/AdminProduct.service ';
+import { NotificationService } from '../../../core/services/Notification.service';
 import { TypeDto } from '../../../core/models/product.model';
 
 @Component({
@@ -13,6 +14,7 @@ import { TypeDto } from '../../../core/models/product.model';
 export class AdminTypesComponent implements OnInit {
   private productService = inject(ProductService);
   private adminProductService = inject(AdminProductService);
+  private notify = inject(NotificationService);
 
   types = signal<TypeDto[]>([]);
   newName = '';
@@ -33,7 +35,7 @@ export class AdminTypesComponent implements OnInit {
     this.errorMessage.set(null);
 
     this.adminProductService.createType({ name: this.newName.trim() }).subscribe({
-      next: () => { this.newName = ''; this.load(); },
+      next: () => { this.newName = ''; this.load(); this.notify.success('Type added'); },
       error: (err) => this.errorMessage.set(err?.error?.detail ?? 'Could not add type.')
     });
   }
@@ -49,6 +51,7 @@ export class AdminTypesComponent implements OnInit {
     this.adminProductService.updateType(id, { name: this.editingName.trim() }).subscribe(() => {
       this.editingId.set(null);
       this.load();
+      this.notify.success('Type updated');
     });
   }
 
@@ -56,8 +59,12 @@ export class AdminTypesComponent implements OnInit {
     if (!confirm(`Delete type "${type.name}"?`)) return;
 
     this.adminProductService.deleteType(type.id).subscribe({
-      next: () => this.load(),
-      error: (err) => alert(err?.error?.detail ?? 'Could not delete this type.')
+      next: () => { this.load(); this.notify.success('Type deleted'); },
+      error: (err) => {
+        const message = err?.error?.detail ?? 'Could not delete this type.';
+        alert(message);
+        this.notify.error(message);
+      }
     });
   }
 }

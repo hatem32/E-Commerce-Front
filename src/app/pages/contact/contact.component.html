@@ -1,0 +1,64 @@
+<section class="hero-section py-5">
+  <div class="container py-4 text-center">
+    <div class="hero-eyebrow mb-2">Get In Touch</div>
+    <h1 class="fw-bold">We'd love to hear from you</h1>
+    <p class="lead mx-auto" style="max-width: 560px;">
+      Questions about an order, a product, or just want to say hi? Reach out.
+    </p>
+  </div>
+</section>
+
+<div class="container py-5">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="admin-card mb-3">
+        <i class="fas fa-envelope text-primary mb-2"></i>
+        <h6 class="mb-1">Email</h6>
+        <a href="mailto:support&#64;eshop.example" class="text-muted small">support&#64;eshop.example</a>
+      </div>
+      <div class="admin-card mb-3">
+        <i class="fas fa-phone text-primary mb-2"></i>
+        <h6 class="mb-1">Phone</h6>
+        <span class="text-muted small">+20 100 000 0000</span>
+      </div>
+      <div class="admin-card">
+        <i class="fas fa-location-dot text-primary mb-2"></i>
+        <h6 class="mb-1">Address</h6>
+        <span class="text-muted small">Cairo, Egypt</span>
+      </div>
+    </div>
+
+    <div class="col-lg-8">
+      <div class="admin-card">
+        <h5 class="mb-4">Send us a message</h5>
+        <form (ngSubmit)="submit()">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Name</label>
+              <input class="form-control" [(ngModel)]="model.name" name="name" required />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" [(ngModel)]="model.email" name="email" required />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Subject</label>
+              <input class="form-control" [(ngModel)]="model.subject" name="subject" />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Message</label>
+              <textarea class="form-control" rows="5" [(ngModel)]="model.message" name="message" required></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-4 px-4" [disabled]="sending()">
+            @if (sending()) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+            }
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

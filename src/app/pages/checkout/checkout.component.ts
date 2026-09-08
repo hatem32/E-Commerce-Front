@@ -7,6 +7,7 @@ import { environment } from '../../../environments/environment';
 import { BasketService } from '../../core/services/basket.service';
 import { OrderService } from '../../core/services/order.service';
 import { PaymentService } from '../../core/services/payment.service';
+import { NotificationService } from '../../core/services/Notification.service';
 import { AddressDto, DeliveryMethodDto } from '../../core/models/order.model';
 
 @Component({
@@ -20,6 +21,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
   private orderService = inject(OrderService);
   private paymentService = inject(PaymentService);
   private router = inject(Router);
+  private notify = inject(NotificationService);
 
   deliveryMethods = signal<DeliveryMethodDto[]>([]);
   selectedDeliveryMethodId = signal<number | null>(null);
@@ -140,6 +142,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
     if (error) {
       this.errorMessage.set(error.message ?? 'Payment failed. Please check your card details.');
+      this.notify.error('Payment failed. Please check your card details.');
       return;
     }
 
@@ -151,6 +154,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     // The order was already created before payment was confirmed (see preparePayment).
     // The webhook updates its status server-side; we just take the user to it.
     this.basket.clearBasket();
+    this.notify.success('Order placed successfully!');
     this.router.navigate(['/orders', this.pendingOrderId]);
   }
 }

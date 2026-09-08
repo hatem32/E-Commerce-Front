@@ -1,0 +1,21 @@
+<section class="hero-section py-5">
+  <div class="container py-4 text-center">
+    <div class="hero-eyebrow mb-2">Help Center</div>
+    <h1 class="fw-bold">Frequently Asked Questions</h1>
+  </div>
+</section>
+
+<div class="container py-5" style="max-width: 760px;">
+  @for (faq of faqs; track faq.question; let i = $index) {
+    <div class="admin-card mb-3">
+      <button class="btn w-100 text-start d-flex justify-content-between align-items-center p-0 border-0 bg-transparent"
+              (click)="toggle(i)">
+        <span class="fw-semibold">{{ faq.question }}</span>
+        <i class="fas" [class.fa-chevron-down]="openIndex() !== i" [class.fa-chevron-up]="openIndex() === i"></i>
+      </button>
+      @if (openIndex() === i) {
+        <p class="text-muted mt-3 mb-0">{{ faq.answer }}</p>
+      }
+    </div>
+  }
+</div>

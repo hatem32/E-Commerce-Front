@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { catchError, of } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { WishlistItemDto } from '../models/wishlist.model';
 
@@ -38,23 +38,20 @@ export class WishlistService {
     return this.itemsSignal().some(i => i.productId === productId);
   }
 
-  add(productId: number): void {
-    this.http.post<WishlistItemDto>(`${this.baseUrl}/${productId}`, {}).subscribe(item => {
-      this.itemsSignal.update(items => [...items, item]);
-    });
+  add(productId: number): Observable<WishlistItemDto> {
+    return this.http.post<WishlistItemDto>(`${this.baseUrl}/${productId}`, {}).pipe(
+      tap(item => this.itemsSignal.update(items => [...items, item]))
+    );
   }
 
-  remove(productId: number): void {
-    this.http.delete(`${this.baseUrl}/${productId}`).subscribe(() => {
-      this.itemsSignal.update(items => items.filter(i => i.productId !== productId));
-    });
+  remove(productId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${productId}`).pipe(
+      tap(() => this.itemsSignal.update(items => items.filter(i => i.productId !== productId)))
+    );
   }
 
-  toggle(productId: number): void {
-    if (this.isWishlisted(productId)) {
-      this.remove(productId);
-    } else {
-      this.add(productId);
-    }
+  /** Returns an observable so callers (e.g. a button) can track loading/error state. */
+  toggle(productId: number): Observable<WishlistItemDto | void> {
+    return this.isWishlisted(productId) ? this.remove(productId) : this.add(productId);
   }
 }

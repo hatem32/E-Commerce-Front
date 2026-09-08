@@ -1,0 +1,32 @@
+<section class="hero-section py-5">
+  <div class="container py-4 text-center">
+    <div class="hero-eyebrow mb-2">Browse</div>
+    <h1 class="fw-bold">All Categories</h1>
+    <p class="lead">Find exactly what you're looking for.</p>
+  </div>
+</section>
+
+<div class="container py-5">
+  <h4 class="mb-4">By Type</h4>
+  <div class="row g-3 mb-5">
+    @for (type of types(); track type.id) {
+      <div class="col-6 col-md-4 col-lg-3">
+        <a class="category-card" [routerLink]="['/products']" [queryParams]="{ typeId: type.id }">
+          <i class="fas" [class]="'fas ' + iconFor(type.name)"></i>
+          <span class="category-name">{{ type.name }}</span>
+        </a>
+      </div>
+    }
+  </div>
+
+  <h4 class="mb-4">By Brand</h4>
+  <div class="row g-2">
+    @for (brand of brands(); track brand.id) {
+      <div class="col-6 col-md-3 col-lg-2">
+        <a class="btn btn-outline-primary w-100" [routerLink]="['/products']" [queryParams]="{ brandId: brand.id }">
+          {{ brand.name }}
+        </a>
+      </div>
+    }
+  </div>
+</div>

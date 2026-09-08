@@ -1,25 +1,27 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { BasketService } from '../../core/services/basket.service';
-import { WishlistService } from '../../core/services/wishlist.service';
 import { AuthService } from '../../core/services/auth.service';
 import { BrandDto, ProductDto, ProductQueryParams, TypeDto } from '../../core/models/product.model';
+import { WishlistButtonComponent } from '../../shared/wishlist-button/wishlist-button.component';
+import { NotificationService } from '../../core/services/Notification.service';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [FormsModule, RouterLink, CurrencyPipe],
+  imports: [FormsModule, RouterLink, CurrencyPipe, WishlistButtonComponent],
   templateUrl: './product-list.component.html'
 })
 export class ProductListComponent implements OnInit {
   private productService = inject(ProductService);
   private auth = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   basket = inject(BasketService);
-  wishlist = inject(WishlistService);
+  private notify = inject(NotificationService);
 
   products = signal<ProductDto[]>([]);
   brands = signal<BrandDto[]>([]);
@@ -36,6 +38,13 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.productService.getBrands().subscribe(brands => this.brands.set(brands));
     this.productService.getTypes().subscribe(types => this.types.set(types));
+
+    // Support links from category cards / other pages: /products?typeId=3&brandId=2
+    const typeId = this.route.snapshot.queryParamMap.get('typeId');
+    const brandId = this.route.snapshot.queryParamMap.get('brandId');
+    if (typeId) this.query.typeId = Number(typeId);
+    if (brandId) this.query.brandId = Number(brandId);
+
     this.loadProducts();
   }
 
@@ -66,16 +75,6 @@ export class ProductListComponent implements OnInit {
     }
 
     this.basket.addItem(product);
-  }
-
-  toggleWishlist(product: ProductDto, event: Event): void {
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (!this.auth.requireLogin(this.router.url)) {
-      return;
-    }
-
-    this.wishlist.toggle(product.id);
+    this.notify.success(`${product.name} added to cart`);
   }
 }

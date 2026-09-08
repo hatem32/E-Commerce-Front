@@ -5,6 +5,7 @@ import { ProductService } from '../../../core/services/product.service';
 import { AdminProductService } from '../../core/services/AdminProduct.service ';
 import { BrandDto, TypeDto } from '../../../core/models/product.model';
 import { ProductFormPayload } from '../../core/models/admin.models';
+import { NotificationService } from '../../../core/services/Notification.service';
 
 @Component({
   selector: 'app-product-form',
@@ -17,6 +18,7 @@ export class ProductFormComponent implements OnInit {
   private router = inject(Router);
   private productService = inject(ProductService);
   private adminProductService = inject(AdminProductService);
+  private notify = inject(NotificationService);
 
   isEdit = false;
   productId: number | null = null;
@@ -103,11 +105,13 @@ export class ProductFormComponent implements OnInit {
     request.subscribe({
       next: () => {
         this.saving.set(false);
+        this.notify.success(this.isEdit ? 'Product updated' : 'Product created');
         this.router.navigateByUrl('/admin/products');
       },
       error: () => {
         this.saving.set(false);
         this.errorMessage.set('Could not save the product. Please check your details.');
+        this.notify.error('Could not save the product.');
       }
     });
   }

@@ -17,6 +17,17 @@ export interface UserDto {
   displayName: string;
 }
 
+export interface RegisterResultDto {
+  email: string;
+  displayName: string;
+  message: string;
+}
+
+export interface VerifyOtpDto {
+  email: string;
+  otp: string;
+}
+
 export interface CurrentUser {
   email: string;
   displayName: string;

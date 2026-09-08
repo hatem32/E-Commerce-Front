@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { BasketService } from '../../core/services/basket.service';
+import { NotificationService } from '../../core/services/Notification.service';
 import { WishlistItemDto } from '../../core/models/wishlist.model';
 
 @Component({
@@ -14,6 +15,7 @@ import { WishlistItemDto } from '../../core/models/wishlist.model';
 export class WishlistComponent {
   wishlist = inject(WishlistService);
   private basket = inject(BasketService);
+  private notify = inject(NotificationService);
 
   addToCart(item: WishlistItemDto): void {
     this.basket.addItem({
@@ -27,9 +29,12 @@ export class WishlistComponent {
       productBrand: item.productBrand,
       productType: item.productType
     });
+    this.notify.success(`${item.productName} added to cart`);
   }
 
   remove(item: WishlistItemDto): void {
-    this.wishlist.remove(item.productId);
+    this.wishlist.remove(item.productId).subscribe(() => {
+      this.notify.info('Removed from wishlist');
+    });
   }
 }

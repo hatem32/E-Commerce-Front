@@ -32,9 +32,7 @@
           <button class="btn btn-primary btn-lg flex-grow-1" (click)="addToCart()">
             <i class="fas fa-cart-plus me-2"></i>Add to Cart
           </button>
-          <button class="btn btn-outline-danger btn-lg" (click)="toggleWishlist()">
-            <i class="fa-heart" [class.fas]="wishlist.isWishlisted(p.id)" [class.far]="!wishlist.isWishlisted(p.id)"></i>
-          </button>
+          <app-wishlist-button [productId]="p.id" size="lg" [showLabel]="true"></app-wishlist-button>
         </div>
       </div>
     </div>

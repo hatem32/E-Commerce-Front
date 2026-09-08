@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { ProductService } from '../../../core/services/product.service';
 import { AdminProductService } from '../../core/services/AdminProduct.service ';
 import { ProductDto } from '../../../core/models/product.model';
+import { NotificationService } from '../../../core/services/Notification.service';
 
 @Component({
   selector: 'app-admin-products',
@@ -14,6 +15,7 @@ import { ProductDto } from '../../../core/models/product.model';
 export class AdminProductsComponent implements OnInit {
   private productService = inject(ProductService);
   private adminProductService = inject(AdminProductService);
+  private notify = inject(NotificationService);
 
   products = signal<ProductDto[]>([]);
 
@@ -28,6 +30,9 @@ export class AdminProductsComponent implements OnInit {
   delete(product: ProductDto): void {
     if (!confirm(`Delete "${product.name}"? This can't be undone.`)) return;
 
-    this.adminProductService.deleteProduct(product.id).subscribe(() => this.load());
+    this.adminProductService.deleteProduct(product.id).subscribe(() => {
+      this.load();
+      this.notify.success('Product deleted');
+    });
   }
 }

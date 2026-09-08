@@ -1,7 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { NotificationService } from '../../core/services/Notification.service';
 import { RegisterDto } from '../../core/models/auth.model';
 
 @Component({
@@ -12,6 +13,8 @@ import { RegisterDto } from '../../core/models/auth.model';
 })
 export class RegisterComponent {
   private auth = inject(AuthService);
+  private notify = inject(NotificationService);
+  private router = inject(Router);
 
   model: RegisterDto = { email: '', password: '', userName: '', displayName: '', phoneNumber: '' };
   loading = signal(false);
@@ -22,9 +25,10 @@ export class RegisterComponent {
     this.loading.set(true);
 
     this.auth.register(this.model).subscribe({
-      next: () => {
+      next: (result) => {
         this.loading.set(false);
-        this.auth.redirectAfterLogin();
+        this.notify.success('Account created! Check your email for a verification code.');
+        this.router.navigate(['/verify-otp'], { queryParams: { email: result.email } });
       },
       error: (err) => {
         this.loading.set(false);

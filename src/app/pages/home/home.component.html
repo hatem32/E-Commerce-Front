@@ -1,16 +1,85 @@
-<section class="hero-section text-white text-center py-5">
-  <div class="container py-5">
-    <h1 class="display-4 fw-bold">Everything you need, in one place</h1>
-    <p class="lead mb-4">Great products, great prices, delivered to your door.</p>
-    <a routerLink="/products" class="btn btn-light btn-lg px-4">
-      <i class="fas fa-bag-shopping me-2"></i>Shop Now
-    </a>
+<!-- Hero -->
+<section class="hero-section py-5">
+  <div class="container py-5 position-relative">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="hero-eyebrow mb-2">New Season, New Finds</div>
+        <h1 class="fw-bold mb-3">Everything you need,<br />curated with care.</h1>
+        <p class="lead mb-4" style="max-width: 560px;">
+          From everyday essentials to standout pieces - shop a handpicked catalog
+          with fast delivery and secure checkout, every time.
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <a routerLink="/products" class="btn btn-light btn-lg px-4">
+            <i class="fas fa-bag-shopping me-2"></i>Shop Now
+          </a>
+          <a routerLink="/categories" class="btn btn-outline-light btn-lg px-4">
+            Browse Categories
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
+<!-- Trust strip -->
+<section class="trust-strip py-4">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-6 col-md-3">
+        <div class="trust-item">
+          <i class="fas fa-truck-fast"></i>
+          <div><strong>Fast Delivery</strong><span>2-5 business days</span></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="trust-item">
+          <i class="fas fa-lock"></i>
+          <div><strong>Secure Payment</strong><span>Powered by Stripe</span></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="trust-item">
+          <i class="fas fa-rotate-left"></i>
+          <div><strong>Easy Returns</strong><span>Hassle-free process</span></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="trust-item">
+          <i class="fas fa-headset"></i>
+          <div><strong>24/7 Support</strong><span>We're here to help</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Shop by category -->
 <div class="container py-5">
+  <div class="section-heading mb-4">
+    <div class="eyebrow">Explore</div>
+    <h2 class="mb-0">Shop by Category</h2>
+  </div>
+
+  <div class="row g-3">
+    @for (category of categories(); track category.id) {
+      <div class="col-6 col-md-3">
+        <a class="category-card" [routerLink]="['/products']" [queryParams]="{ typeId: category.id }">
+          <i class="fas" [class]="'fas ' + iconFor(category.name)"></i>
+          <span class="category-name">{{ category.name }}</span>
+        </a>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Featured Products -->
+<div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0">Featured Products</h2>
+    <div class="section-heading">
+      <div class="eyebrow">Handpicked</div>
+      <h2 class="mb-0">Featured Products</h2>
+    </div>
     <a routerLink="/products" class="btn btn-outline-primary">View All</a>
   </div>
 
@@ -18,25 +87,36 @@
     @for (product of featuredProducts(); track product.id) {
       <div class="col-6 col-md-4 col-lg-3">
         <a class="text-decoration-none text-dark" [routerLink]="['/products', product.id]">
-          <div class="card h-100 product-card shadow-sm position-relative">
-            <button class="btn btn-sm btn-light wishlist-heart-btn" (click)="toggleWishlist(product, $event)">
-              <i class="fa-heart" [class.fas]="wishlist.isWishlisted(product.id)" [class.far]="!wishlist.isWishlisted(product.id)"
-                 [class.text-danger]="wishlist.isWishlisted(product.id)"></i>
-            </button>
+          <div class="card h-100 product-card shadow-sm">
             <img [src]="product.pictureUrl" class="card-img-top product-image" [alt]="product.name" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27200%27%20height%3D%27200%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%23f3f4f6%27/%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20font-family%3D%27sans-serif%27%20font-size%3D%2714%27%20fill%3D%27%239ca3af%27%20text-anchor%3D%27middle%27%20dy%3D%27.3em%27%3ENo%20Image%3C/text%3E%3C/svg%3E'" />
             <div class="card-body d-flex flex-column">
               <h6 class="card-title">{{ product.name }}</h6>
               <div class="text-muted small mb-2">{{ product.productBrand }}</div>
               <div class="mt-auto d-flex justify-content-between align-items-center">
                 <span class="fw-bold text-primary">{{ product.price | currency }}</span>
-                <button class="btn btn-sm btn-primary" (click)="addToCart(product, $event)">
-                  <i class="fas fa-cart-plus"></i>
-                </button>
+                <div class="d-flex gap-2">
+                  <app-wishlist-button [productId]="product.id" size="sm"></app-wishlist-button>
+                  <button class="btn btn-sm btn-primary" (click)="addToCart(product, $event)">
+                    <i class="fas fa-cart-plus"></i>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </a>
       </div>
     }
+  </div>
+</div>
+
+<!-- Newsletter -->
+<div class="container pb-5">
+  <div class="newsletter-section p-4 p-md-5 text-center">
+    <h3 class="fw-bold mb-2">Get 10% off your first order</h3>
+    <p class="mb-4" style="opacity: 0.85;">Join our newsletter for deals, drops, and new arrivals.</p>
+    <form class="d-flex justify-content-center" style="max-width: 420px; margin: 0 auto;" (ngSubmit)="subscribeNewsletter()">
+      <input type="email" class="form-control" placeholder="you&#64;example.com" [(ngModel)]="newsletterEmail" name="newsletterEmail" required />
+      <button type="submit" class="btn btn-primary px-4">Subscribe</button>
+    </form>
   </div>
 </div>

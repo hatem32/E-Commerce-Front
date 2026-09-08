@@ -1,0 +1,41 @@
+<div class="container py-5" style="max-width: 440px;">
+  <div class="admin-card text-center">
+    <i class="fas fa-envelope-circle-check fa-2x text-primary mb-3"></i>
+    <h3 class="mb-2">Verify your email</h3>
+    <p class="text-muted mb-4">
+      We sent a 6-digit code to <strong>{{ email }}</strong>. Enter it below to activate your account.
+    </p>
+
+    <form (ngSubmit)="submit()">
+      <input
+        type="text"
+        inputmode="numeric"
+        maxlength="6"
+        class="form-control form-control-lg text-center mb-3"
+        style="letter-spacing: 0.5em; font-weight: 700; font-size: 1.5rem;"
+        placeholder="------"
+        [(ngModel)]="otp"
+        name="otp"
+        required
+      />
+
+      @if (errorMessage()) {
+        <div class="alert alert-danger py-2">{{ errorMessage() }}</div>
+      }
+
+      <button type="submit" class="btn btn-primary w-100" [disabled]="loading() || otp.length !== 6">
+        @if (loading()) {
+          <span class="spinner-border spinner-border-sm me-2"></span>
+        }
+        Verify &amp; Continue
+      </button>
+    </form>
+
+    <button type="button" class="btn btn-link mt-3" [disabled]="resending()" (click)="resend()">
+      @if (resending()) {
+        <span class="spinner-border spinner-border-sm me-2"></span>
+      }
+      Didn't get a code? Resend
+    </button>
+  </div>
+</div>

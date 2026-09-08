@@ -2,6 +2,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminOrderService } from '../../core/services/AdminOrder.service';
+import { NotificationService } from '../../../core/services/Notification.service';
 import { OrderToReturnDto } from '../../../core/models/order.model';
 
 const STATUSES = ['Pending', 'PaymentReceived', 'PaymentFailed'];
@@ -14,6 +15,7 @@ const STATUSES = ['Pending', 'PaymentReceived', 'PaymentFailed'];
 })
 export class AdminOrdersComponent implements OnInit {
   private orderService = inject(AdminOrderService);
+  private notify = inject(NotificationService);
 
   orders = signal<OrderToReturnDto[]>([]);
   statuses = STATUSES;
@@ -34,10 +36,11 @@ export class AdminOrdersComponent implements OnInit {
       next: () => {
         this.updatingId.set(null);
         this.load();
+        this.notify.success(`Order status updated to ${status}`);
       },
       error: () => {
         this.updatingId.set(null);
-        alert('Could not update this order\'s status.');
+        this.notify.error("Could not update this order's status.");
       }
     });
   }

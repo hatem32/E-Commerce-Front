@@ -26,7 +26,6 @@ body {
   background: #fff;
 }
 
-
 .wishlist-heart-btn {
   position: absolute;
   top: 0.5rem;
@@ -40,6 +39,138 @@ body {
   justify-content: center;
   padding: 0;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Wishlist button (shared component) */
+.wishlist-btn {
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.wishlist-btn-icon-only.btn-sm {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wishlist-btn-icon-only.btn-lg {
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ===================== Page transition ===================== */
+/* The routed component's root element is always the DOM sibling right after
+   <router-outlet>, and Angular recreates it fresh on every navigation - so this
+   re-triggers automatically on every route change with zero extra JS/directives. */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+router-outlet + * {
+  display: block;
+  animation: pageFadeIn 0.35s ease both;
+}
+
+/* ===================== General polish ===================== */
+.btn {
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.card {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+a {
+  transition: color 0.15s ease;
+}
+
+/* ===================== Toast notifications ===================== */
+.toast-stack {
+  position: fixed;
+  top: 5.5rem;
+  right: 1rem;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 340px;
+}
+
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.app-toast {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #fff;
+  border-radius: 0.7rem;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #1f2937;
+  border-left: 4px solid #6b7280;
+  animation: toastSlideIn 0.25s ease both;
+}
+
+.app-toast.toast-success {
+  border-left-color: #16a34a;
+}
+
+.app-toast.toast-success i {
+  color: #16a34a;
+}
+
+.app-toast.toast-error {
+  border-left-color: #dc2626;
+}
+
+.app-toast.toast-error i {
+  color: #dc2626;
+}
+
+.app-toast.toast-info {
+  border-left-color: #0891b2;
+}
+
+.app-toast.toast-info i {
+  color: #0891b2;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  padding: 0 0.15rem;
+  line-height: 1;
+}
+
+.toast-close:hover {
+  color: #4b5563;
+}
+
+@media (max-width: 480px) {
+  .toast-stack {
+    left: 1rem;
+    right: 1rem;
+    max-width: none;
+  }
 }
 
 /* Admin panel */
@@ -80,4 +211,278 @@ body {
   border-radius: 0.9rem;
   padding: 1.25rem;
   color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+:root {
+  --navy-950: #060a14;
+  --navy-900: #0b1220;
+  --navy-800: #121c33;
+  --navy-700: #1a2744;
+  --navy-600: #24325288;
+  --blue-accent: #3b82f6;
+  --blue-accent-dark: #2563eb;
+  --gold-accent: #cda766;
+  --text-on-dark: #e7ecf5;
+  --text-muted-on-dark: #97a3bd;
+}
+
+body {
+  font-family: 'Inter', "Segoe UI", system-ui, -apple-system, sans-serif;
+  background-color: #f5f6f9;
+  color: #1a2233;
+}
+
+h1, h2, h3, .display-heading {
+  font-family: 'Playfair Display', 'Inter', serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* ===================== Navbar ===================== */
+.sb-topnav.navbar,
+nav.navbar.navbar-dark.bg-dark {
+  background: linear-gradient(90deg, var(--navy-950), var(--navy-800)) !important;
+  border-bottom: 1px solid rgba(205, 167, 102, 0.25);
+}
+
+.navbar-brand {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--gold-accent) !important;
+}
+
+.navbar .nav-link {
+  color: var(--text-muted-on-dark) !important;
+  font-weight: 500;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: #fff !important;
+}
+
+/* ===================== Buttons ===================== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue-accent-dark), var(--blue-accent));
+  border: none;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8, var(--blue-accent-dark));
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.38);
+}
+
+.btn-outline-primary {
+  border-color: var(--blue-accent);
+  color: var(--blue-accent-dark);
+  border-radius: 0.6rem;
+  font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+  background: var(--blue-accent);
+  border-color: var(--blue-accent);
+}
+
+.btn-light, .btn-outline-secondary {
+  border-radius: 0.6rem;
+}
+
+/* ===================== Hero ===================== */
+.hero-section {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.25), transparent 45%),
+    linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 55%, var(--navy-800) 100%);
+  color: var(--text-on-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(205, 167, 102, 0.06) 1px, transparent 1px),
+                     linear-gradient(90deg, rgba(205, 167, 102, 0.06) 1px, transparent 1px);
+  background-size: 42px 42px;
+  pointer-events: none;
+}
+
+.hero-section .hero-eyebrow {
+  color: var(--gold-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.hero-section h1 {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  color: #fff;
+}
+
+.hero-section p.lead {
+  color: var(--text-muted-on-dark);
+}
+
+.hero-section .btn-light {
+  font-weight: 700;
+  border-radius: 0.6rem;
+}
+
+/* ===================== Trust strip ===================== */
+.trust-strip {
+  background: #fff;
+  border-bottom: 1px solid #eef0f4;
+}
+
+.trust-strip .trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.trust-strip .trust-item i {
+  font-size: 1.4rem;
+  color: var(--blue-accent-dark);
+}
+
+.trust-strip .trust-item strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.trust-strip .trust-item span {
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+/* ===================== Category cards ===================== */
+.category-card {
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+  color: #fff;
+  min-height: 140px;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.1rem;
+  background: linear-gradient(160deg, var(--navy-800), var(--navy-700));
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.25);
+  color: #fff;
+}
+
+.category-card i {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.6rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.category-card .category-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+/* ===================== Newsletter ===================== */
+.newsletter-section {
+  background: linear-gradient(135deg, var(--navy-900), var(--navy-800));
+  color: var(--text-on-dark);
+  border-radius: 1.2rem;
+}
+
+.newsletter-section input.form-control {
+  border-radius: 0.6rem 0 0 0.6rem;
+  border: none;
+}
+
+.newsletter-section .btn {
+  border-radius: 0 0.6rem 0.6rem 0;
+}
+
+/* ===================== Footer ===================== */
+.site-footer {
+  background: var(--navy-950);
+  color: var(--text-muted-on-dark);
+}
+
+.site-footer h6 {
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.site-footer a {
+  color: var(--text-muted-on-dark);
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.site-footer a:hover {
+  color: var(--gold-accent);
+}
+
+.site-footer .footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.82rem;
+  color: #64748b;
+}
+
+.site-footer .social-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+  color: var(--text-on-dark) !important;
+}
+
+.site-footer .social-icon:hover {
+  background: var(--blue-accent-dark);
+  color: #fff !important;
+}
+
+/* ===================== Price accent ===================== */
+.text-primary {
+  color: var(--blue-accent-dark) !important;
+}
+
+/* ===================== Section heading ===================== */
+.section-heading .eyebrow {
+  color: var(--blue-accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  font-weight: 700;
 }

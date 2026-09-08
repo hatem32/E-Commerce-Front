@@ -1,0 +1,22 @@
+<button
+  type="button"
+  class="btn wishlist-btn"
+  [class.btn-outline-secondary]="!wishlisted"
+  [class.btn-danger]="wishlisted"
+  [class.btn-sm]="size === 'sm'"
+  [class.btn-lg]="size === 'lg'"
+  [class.wishlist-btn-icon-only]="!showLabel"
+  [disabled]="loading()"
+  (click)="toggle($event)"
+  [attr.aria-label]="wishlisted ? 'Remove from wishlist' : 'Add to wishlist'"
+  [attr.title]="wishlisted ? 'Remove from wishlist' : 'Add to wishlist'"
+>
+  @if (loading()) {
+    <span class="spinner-border spinner-border-sm" [class.me-2]="showLabel"></span>
+  } @else {
+    <i class="fas fa-heart" [class.me-2]="showLabel"></i>
+  }
+  @if (showLabel) {
+    {{ wishlisted ? 'Wishlisted' : 'Wishlist' }}
+  }
+</button>

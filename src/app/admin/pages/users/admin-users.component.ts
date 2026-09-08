@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AdminUserService } from '../../core/services/AdminUser.service';
+import { NotificationService } from '../../../core/services/Notification.service';
 import { AdminRole, AdminUser } from '../../core/models/admin.models';
 
 @Component({
@@ -11,6 +12,7 @@ import { AdminRole, AdminUser } from '../../core/models/admin.models';
 })
 export class AdminUsersComponent implements OnInit {
   private userService = inject(AdminUserService);
+  private notify = inject(NotificationService);
 
   users = signal<AdminUser[]>([]);
   roles = signal<AdminRole[]>([]);
@@ -35,16 +37,23 @@ export class AdminUsersComponent implements OnInit {
   addRole(): void {
     if (!this.newRoleName.trim()) return;
 
-    this.userService.createRole(this.newRoleName.trim()).subscribe(() => {
-      this.newRoleName = '';
-      this.loadRoles();
+    this.userService.createRole(this.newRoleName.trim()).subscribe({
+      next: () => {
+        this.newRoleName = '';
+        this.loadRoles();
+        this.notify.success('Role added');
+      },
+      error: () => this.notify.error('Could not add this role.')
     });
   }
 
   deleteRole(role: AdminRole): void {
     if (!confirm(`Delete role "${role.name}"?`)) return;
 
-    this.userService.deleteRole(role.id).subscribe(() => this.loadRoles());
+    this.userService.deleteRole(role.id).subscribe(() => {
+      this.loadRoles();
+      this.notify.success('Role deleted');
+    });
   }
 
   startEditRoles(user: AdminUser): void {
@@ -64,6 +73,7 @@ export class AdminUsersComponent implements OnInit {
     this.userService.updateUserRoles(user.id, Array.from(this.editingRoles)).subscribe(() => {
       this.editingUserId.set(null);
       this.loadUsers();
+      this.notify.success('Roles updated');
     });
   }
 
