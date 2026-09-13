@@ -1,50 +1,255 @@
-<div class="container py-5" style="max-width: 460px;">
-  <div class="card shadow-sm">
-    <div class="card-body p-4">
-      <h3 class="text-center mb-4"><i class="fas fa-user-plus me-2"></i>Create Account</h3>
+<div class="auth-page">
 
-      <form (ngSubmit)="submit()">
-        <div class="mb-3">
-          <label class="form-label">Display Name</label>
-          <input class="form-control" [(ngModel)]="model.displayName" name="displayName" required />
+  <div class="auth-container">
+
+    <!-- Left Visual Side -->
+    <div class="auth-visual">
+
+      <div class="auth-visual-content">
+
+        <div class="auth-brand">
+          Orbit<span>+</span>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">Username</label>
-          <input class="form-control" [(ngModel)]="model.userName" name="userName" required />
+        <span class="auth-eyebrow">
+          Join Orbit+
+        </span>
+
+        <h1>
+          Your shopping
+          <br />
+          <span>starts here.</span>
+        </h1>
+
+        <p>
+          Create your account and enjoy a faster,
+          smarter shopping experience built around you.
+        </p>
+
+        <div class="auth-benefits">
+
+          <div class="auth-benefit">
+            <span class="auth-benefit-icon">
+              <i class="fa-regular fa-heart"></i>
+            </span>
+            <span>Save your wishlist</span>
+          </div>
+
+          <div class="auth-benefit">
+            <span class="auth-benefit-icon">
+              <i class="fa-solid fa-bolt"></i>
+            </span>
+            <span>Checkout faster</span>
+          </div>
+
+          <div class="auth-benefit">
+            <span class="auth-benefit-icon">
+              <i class="fa-solid fa-truck-fast"></i>
+            </span>
+            <span>Track every order</span>
+          </div>
+
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" [(ngModel)]="model.email" name="email" required />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Phone (optional)</label>
-          <input class="form-control" [(ngModel)]="model.phoneNumber" name="phoneNumber" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" [(ngModel)]="model.password" name="password" minlength="8" required />
-          <div class="form-text">At least 8 characters.</div>
-        </div>
-
-        @if (errorMessage()) {
-          <div class="alert alert-danger py-2">{{ errorMessage() }}</div>
-        }
-
-        <button type="submit" class="btn btn-primary w-100" [disabled]="loading()">
-          @if (loading()) {
-            <span class="spinner-border spinner-border-sm me-2"></span>
-          }
-          Create Account
-        </button>
-      </form>
-
-      <div class="text-center mt-3 small">
-        Already have an account? <a routerLink="/login">Login</a>
       </div>
+
     </div>
+
+    <!-- Form Side -->
+    <div class="auth-form-side">
+
+      <div class="auth-form-container auth-register-container">
+
+        <div class="auth-mobile-brand">
+          Orbit<span>+</span>
+        </div>
+
+        <div class="auth-heading">
+          <h2>Create your account</h2>
+          <p>Join Orbit+ and start shopping today.</p>
+        </div>
+
+        <form (ngSubmit)="submit()" class="auth-form">
+
+          <!-- Display Name + Username -->
+          <div class="auth-form-row">
+
+            <div class="auth-field">
+
+              <label for="display-name">
+                Display Name
+              </label>
+
+              <div class="auth-input-wrapper">
+
+                <i class="fa-regular fa-user"></i>
+
+                <input
+                  id="display-name"
+                  type="text"
+                  [(ngModel)]="model.displayName"
+                  name="displayName"
+                  placeholder="Your name"
+                  autocomplete="name"
+                  required
+                />
+
+              </div>
+
+            </div>
+
+            <div class="auth-field">
+
+              <label for="username">
+                Username
+              </label>
+
+              <div class="auth-input-wrapper">
+
+                <i class="fa-solid fa-at"></i>
+
+                <input
+                  id="username"
+                  type="text"
+                  [(ngModel)]="model.userName"
+                  name="userName"
+                  placeholder="Username"
+                  autocomplete="username"
+                  required
+                />
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Email -->
+          <div class="auth-field">
+
+            <label for="register-email">
+              Email
+            </label>
+
+            <div class="auth-input-wrapper">
+
+              <i class="fa-regular fa-envelope"></i>
+
+              <input
+                id="register-email"
+                type="email"
+                [(ngModel)]="model.email"
+                name="email"
+                placeholder="Enter your email"
+                autocomplete="email"
+                required
+              />
+
+            </div>
+
+          </div>
+
+          <!-- Phone -->
+          <div class="auth-field">
+
+            <label for="phone">
+              Phone
+              <span class="optional-label">Optional</span>
+            </label>
+
+            <div class="auth-input-wrapper">
+
+              <i class="fa-solid fa-phone"></i>
+
+              <input
+                id="phone"
+                type="tel"
+                [(ngModel)]="model.phoneNumber"
+                name="phoneNumber"
+                placeholder="Enter your phone number"
+                autocomplete="tel"
+              />
+
+            </div>
+
+          </div>
+
+          <!-- Password -->
+          <div class="auth-field">
+
+            <label for="register-password">
+              Password
+            </label>
+
+            <div class="auth-input-wrapper">
+
+              <i class="fa-solid fa-lock"></i>
+
+              <input
+                id="register-password"
+                type="password"
+                [(ngModel)]="model.password"
+                name="password"
+                placeholder="Create a password"
+                minlength="8"
+                autocomplete="new-password"
+                required
+              />
+
+            </div>
+
+            <div class="auth-helper">
+              <i class="fa-solid fa-circle-info"></i>
+              Password must be at least 8 characters.
+            </div>
+
+          </div>
+
+          <!-- Error -->
+          @if (errorMessage()) {
+
+            <div class="auth-error">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <span>{{ errorMessage() }}</span>
+            </div>
+
+          }
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            class="auth-submit-btn"
+            [disabled]="loading()"
+          >
+
+            @if (loading()) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Creating account...
+            } @else {
+              Create Account
+              <i class="fa-solid fa-arrow-right"></i>
+            }
+
+          </button>
+
+        </form>
+
+        <div class="auth-switch">
+          Already have an account?
+          <a routerLink="/login">
+            Login
+          </a>
+        </div>
+
+        <div class="auth-security">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Your information is kept safe and secure.</span>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
+
 </div>

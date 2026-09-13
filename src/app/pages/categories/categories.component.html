@@ -1,32 +1,84 @@
-<section class="hero-section py-5">
-  <div class="container py-4 text-center">
-    <div class="hero-eyebrow mb-2">Browse</div>
-    <h1 class="fw-bold">All Categories</h1>
-    <p class="lead">Find exactly what you're looking for.</p>
+<!-- Categories Hero -->
+<section class="categories-hero">
+  <div class="container">
+    <div class="categories-hero-content text-center">
+      <div class="hero-eyebrow mb-3">Explore Orbit+</div>
+
+      <h1 class="fw-bold mb-3">
+        Find what fits your world.
+      </h1>
+
+      <p class="lead mx-auto mb-0">
+        Explore our collections by category or discover products from your
+        favorite brands.
+      </p>
+    </div>
   </div>
 </section>
 
-<div class="container py-5">
-  <h4 class="mb-4">By Type</h4>
-  <div class="row g-3 mb-5">
-    @for (type of types(); track type.id) {
-      <div class="col-6 col-md-4 col-lg-3">
-        <a class="category-card" [routerLink]="['/products']" [queryParams]="{ typeId: type.id }">
-          <i class="fas" [class]="'fas ' + iconFor(type.name)"></i>
-          <span class="category-name">{{ type.name }}</span>
-        </a>
-      </div>
-    }
-  </div>
+<!-- Categories Content -->
+<section class="categories-section">
+  <div class="container">
 
-  <h4 class="mb-4">By Brand</h4>
-  <div class="row g-2">
-    @for (brand of brands(); track brand.id) {
-      <div class="col-6 col-md-3 col-lg-2">
-        <a class="btn btn-outline-primary w-100" [routerLink]="['/products']" [queryParams]="{ brandId: brand.id }">
-          {{ brand.name }}
-        </a>
-      </div>
-    }
+    <!-- Product Types -->
+    <div class="section-heading mb-4">
+      <div class="section-eyebrow">Browse collection</div>
+      <h2 class="mb-2">Shop by Type</h2>
+      <p class="text-muted mb-0">
+        Explore products organized around what you need.
+      </p>
+    </div>
+
+    <div class="row g-3 mb-5">
+      @for (type of types(); track type.id) {
+        <div class="col-6 col-md-4 col-lg-3">
+          <a
+            class="category-card"
+            [routerLink]="['/products']"
+            [queryParams]="{ typeId: type.id }"
+          >
+            <div class="category-card-icon">
+              <i class="fas" [class]="'fas ' + iconFor(type.name)"></i>
+            </div>
+
+            <div class="category-card-content">
+              <span class="category-name">{{ type.name }}</span>
+              <span class="category-card-link">
+                Explore
+                <i class="fas fa-arrow-right"></i>
+              </span>
+            </div>
+          </a>
+        </div>
+      }
+    </div>
+
+    <!-- Brands -->
+    <div class="section-heading mb-4">
+      <div class="section-eyebrow">Discover more</div>
+      <h2 class="mb-2">Shop by Brand</h2>
+      <p class="text-muted mb-0">
+        Find products from brands you know and trust.
+      </p>
+    </div>
+
+    <div class="row g-3">
+      @for (brand of brands(); track brand.id) {
+        <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+          <a
+            class="brand-card"
+            [routerLink]="['/products']"
+            [queryParams]="{ brandId: brand.id }"
+          >
+            <span class="brand-card-name">{{ brand.name }}</span>
+
+            <span class="brand-card-arrow">
+              <i class="fas fa-arrow-up-right-from-square"></i>
+            </span>
+          </a>
+        </div>
+      }
+    </div>
+
   </div>
-</div>
+</section>

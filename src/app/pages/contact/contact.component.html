@@ -1,64 +1,181 @@
-<section class="hero-section py-5">
-  <div class="container py-4 text-center">
-    <div class="hero-eyebrow mb-2">Get In Touch</div>
-    <h1 class="fw-bold">We'd love to hear from you</h1>
-    <p class="lead mx-auto" style="max-width: 560px;">
-      Questions about an order, a product, or just want to say hi? Reach out.
-    </p>
+<!-- Contact Hero -->
+<section class="contact-hero">
+  <div class="container">
+    <div class="contact-hero-content text-center">
+      <div class="hero-eyebrow mb-3">Contact Orbit+</div>
+
+      <h1 class="fw-bold mb-3">
+        We're here to help.
+      </h1>
+
+      <p class="lead mx-auto mb-0">
+        Have a question about an order, a product, or your shopping experience?
+        Our team would love to hear from you.
+      </p>
+    </div>
   </div>
 </section>
 
-<div class="container py-5">
-  <div class="row g-4">
-    <div class="col-lg-4">
-      <div class="admin-card mb-3">
-        <i class="fas fa-envelope text-primary mb-2"></i>
-        <h6 class="mb-1">Email</h6>
-        <a href="mailto:support&#64;eshop.example" class="text-muted small">support&#64;eshop.example</a>
-      </div>
-      <div class="admin-card mb-3">
-        <i class="fas fa-phone text-primary mb-2"></i>
-        <h6 class="mb-1">Phone</h6>
-        <span class="text-muted small">+20 100 000 0000</span>
-      </div>
-      <div class="admin-card">
-        <i class="fas fa-location-dot text-primary mb-2"></i>
-        <h6 class="mb-1">Address</h6>
-        <span class="text-muted small">Cairo, Egypt</span>
-      </div>
-    </div>
+<!-- Contact Content -->
+<section class="contact-section">
+  <div class="container">
+    <div class="row g-4 align-items-stretch">
 
-    <div class="col-lg-8">
-      <div class="admin-card">
-        <h5 class="mb-4">Send us a message</h5>
-        <form (ngSubmit)="submit()">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label">Name</label>
-              <input class="form-control" [(ngModel)]="model.name" name="name" required />
+      <!-- Contact Information -->
+      <div class="col-lg-4">
+        <div class="contact-info-card h-100">
+          <div class="section-eyebrow mb-2">Let's connect</div>
+
+          <h3 class="mb-3">
+            Get in touch with us
+          </h3>
+
+          <p class="contact-info-description mb-4">
+            Whether you need help with your order or want to know more about
+            our products, we're always happy to help.
+          </p>
+
+          <div class="contact-detail">
+            <div class="contact-detail-icon">
+              <i class="fas fa-envelope"></i>
             </div>
-            <div class="col-md-6">
-              <label class="form-label">Email</label>
-              <input type="email" class="form-control" [(ngModel)]="model.email" name="email" required />
-            </div>
-            <div class="col-12">
-              <label class="form-label">Subject</label>
-              <input class="form-control" [(ngModel)]="model.subject" name="subject" />
-            </div>
-            <div class="col-12">
-              <label class="form-label">Message</label>
-              <textarea class="form-control" rows="5" [(ngModel)]="model.message" name="message" required></textarea>
+
+            <div>
+              <span class="contact-detail-label">Email</span>
+              <a
+                href="mailto:hatemhessan969@gmail.com"
+                class="contact-detail-value"
+              >
+                Orbit-Plus@gmail.com
+              </a>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary mt-4 px-4" [disabled]="sending()">
-            @if (sending()) {
-              <span class="spinner-border spinner-border-sm me-2"></span>
-            }
-            Send Message
-          </button>
-        </form>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+
+            <div>
+              <span class="contact-detail-label">Phone</span>
+              <span class="contact-detail-value">
+                +20 100 000 0000
+              </span>
+            </div>
+          </div>
+
+          <div class="contact-detail">
+            <div class="contact-detail-icon">
+              <i class="fas fa-location-dot"></i>
+            </div>
+
+            <div>
+              <span class="contact-detail-label">Location</span>
+              <span class="contact-detail-value">
+                Cairo, Egypt
+              </span>
+            </div>
+          </div>
+
+          <div class="contact-socials mt-4">
+            <a href="#" aria-label="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+
+            <a href="#" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+
+            <a href="#" aria-label="Twitter">
+              <i class="fab fa-x-twitter"></i>
+            </a>
+          </div>
+        </div>
       </div>
+
+      <!-- Contact Form -->
+      <div class="col-lg-8">
+        <div class="contact-form-card h-100">
+          <div class="section-eyebrow mb-2">Send a message</div>
+
+          <h3 class="mb-2">
+            How can we help?
+          </h3>
+
+          <p class="text-muted mb-4">
+            Fill out the form below and we'll get back to you as soon as possible.
+          </p>
+
+          <form (ngSubmit)="submit()">
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label class="form-label">Name</label>
+
+                <input
+                  class="form-control"
+                  [(ngModel)]="model.name"
+                  name="name"
+                  placeholder="Your name"
+                  required
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Email</label>
+
+                <input
+                  type="email"
+                  class="form-control"
+                  [(ngModel)]="model.email"
+                  name="email"
+                  placeholder="you@example.com"
+                  required
+                />
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Subject</label>
+
+                <input
+                  class="form-control"
+                  [(ngModel)]="model.subject"
+                  name="subject"
+                  placeholder="What can we help you with?"
+                />
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Message</label>
+
+                <textarea
+                  class="form-control"
+                  rows="6"
+                  [(ngModel)]="model.message"
+                  name="message"
+                  placeholder="Write your message here..."
+                  required
+                ></textarea>
+              </div>
+
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary contact-submit-btn mt-4 px-4"
+              [disabled]="sending()"
+            >
+              @if (sending()) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+              }
+
+              <i class="fas fa-paper-plane me-2"></i>
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+
     </div>
   </div>
-</div>
+</section>

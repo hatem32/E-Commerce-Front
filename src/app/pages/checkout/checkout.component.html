@@ -1,116 +1,313 @@
-<div class="container py-5">
-  <h2 class="mb-4">Checkout</h2>
+<div class="checkout-page container py-5">
+
+  <div class="checkout-header mb-4">
+    <span class="checkout-eyebrow">Secure checkout</span>
+    <h1>Complete your order</h1>
+    <p>Enter your shipping details and choose your preferred payment method.</p>
+  </div>
 
   @if (basket.basket()?.items?.length === 0) {
-    <div class="alert alert-warning">Your cart is empty. <a routerLink="/products">Go shopping</a>.</div>
+
+    <div class="empty-checkout">
+      <div class="empty-checkout-icon">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </div>
+
+      <h3>Your cart is empty</h3>
+      <p>Add some products to your cart before proceeding to checkout.</p>
+
+      <a routerLink="/products" class="btn checkout-primary-btn">
+        <i class="fa-solid fa-arrow-left me-2"></i>
+        Continue Shopping
+      </a>
+    </div>
+
   } @else {
-    <div class="row g-5">
+
+    <div class="row g-4 align-items-start">
+
+      <!-- Checkout Details -->
       <div class="col-lg-7">
-        <div class="card shadow-sm mb-4">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Shipping Address</h5>
-            <div class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label">First Name</label>
-                <input class="form-control" [(ngModel)]="address.firstName" name="firstName" [disabled]="paymentReady()" required />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Last Name</label>
-                <input class="form-control" [(ngModel)]="address.lastName" name="lastName" [disabled]="paymentReady()" required />
-              </div>
-              <div class="col-12">
-                <label class="form-label">Street</label>
-                <input class="form-control" [(ngModel)]="address.street" name="street" [disabled]="paymentReady()" required />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">City</label>
-                <input class="form-control" [(ngModel)]="address.city" name="city" [disabled]="paymentReady()" required />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Country</label>
-                <input class="form-control" [(ngModel)]="address.country" name="country" [disabled]="paymentReady()" required />
-              </div>
+
+        <!-- Shipping Address -->
+        <section class="checkout-card mb-4">
+          <div class="checkout-card-header">
+            <div class="checkout-section-icon">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+
+            <div>
+              <h2>Shipping Address</h2>
+              <p>Where should we deliver your order?</p>
             </div>
           </div>
-        </div>
 
-        <div class="card shadow-sm mb-4">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Delivery Method</h5>
+          <div class="checkout-card-body">
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label class="checkout-label">First Name</label>
+                <input
+                  class="checkout-input"
+                  [(ngModel)]="address.firstName"
+                  name="firstName"
+                  placeholder="Enter your first name"
+                  [disabled]="paymentReady()"
+                  required
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label class="checkout-label">Last Name</label>
+                <input
+                  class="checkout-input"
+                  [(ngModel)]="address.lastName"
+                  name="lastName"
+                  placeholder="Enter your last name"
+                  [disabled]="paymentReady()"
+                  required
+                />
+              </div>
+
+              <div class="col-12">
+                <label class="checkout-label">Street Address</label>
+                <input
+                  class="checkout-input"
+                  [(ngModel)]="address.street"
+                  name="street"
+                  placeholder="Enter your street address"
+                  [disabled]="paymentReady()"
+                  required
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label class="checkout-label">City</label>
+                <input
+                  class="checkout-input"
+                  [(ngModel)]="address.city"
+                  name="city"
+                  placeholder="Enter your city"
+                  [disabled]="paymentReady()"
+                  required
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label class="checkout-label">Country</label>
+                <input
+                  class="checkout-input"
+                  [(ngModel)]="address.country"
+                  name="country"
+                  placeholder="Enter your country"
+                  [disabled]="paymentReady()"
+                  required
+                />
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- Delivery Method -->
+        <section class="checkout-card mb-4">
+          <div class="checkout-card-header">
+            <div class="checkout-section-icon">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+
+            <div>
+              <h2>Delivery Method</h2>
+              <p>Select the delivery option that suits you.</p>
+            </div>
+          </div>
+
+          <div class="checkout-card-body">
+
             @for (method of deliveryMethods(); track method.id) {
-              <div class="form-check border rounded p-3 mb-2">
-                <input class="form-check-input" type="radio" name="deliveryMethod"
-                       [checked]="selectedDeliveryMethodId() === method.id"
-                       (change)="selectDeliveryMethod(method)" [disabled]="paymentReady()" />
-                <label class="form-check-label d-flex justify-content-between w-100">
-                  <span>
-                    <strong>{{ method.shortName }}</strong>
-                    <div class="text-muted small">{{ method.description }} &middot; {{ method.deliveryTime }}</div>
+
+              <label
+                class="delivery-option"
+                [class.selected]="selectedDeliveryMethodId() === method.id"
+              >
+
+                <input
+                  type="radio"
+                  name="deliveryMethod"
+                  [checked]="selectedDeliveryMethodId() === method.id"
+                  (change)="selectDeliveryMethod(method)"
+                  [disabled]="paymentReady()"
+                />
+
+                <span class="delivery-radio"></span>
+
+                <span class="delivery-content">
+                  <span class="delivery-title">
+                    {{ method.shortName }}
                   </span>
-                  <span class="fw-semibold">{{ method.cost | currency }}</span>
-                </label>
+
+                  <span class="delivery-description">
+                    {{ method.description }}
+                    <span class="delivery-separator">•</span>
+                    {{ method.deliveryTime }}
+                  </span>
+                </span>
+
+                <span class="delivery-price">
+                  {{ method.cost | currency }}
+                </span>
+
+              </label>
+
+            }
+
+          </div>
+        </section>
+
+        <!-- Payment -->
+        <section class="checkout-card">
+          <div class="checkout-card-header">
+            <div class="checkout-section-icon">
+              <i class="fa-solid fa-credit-card"></i>
+            </div>
+
+            <div>
+              <h2>Payment</h2>
+              <p>Complete your payment securely.</p>
+            </div>
+          </div>
+
+          <div class="checkout-card-body">
+
+            @if (!paymentReady()) {
+              <div class="payment-info">
+                <i class="fa-solid fa-lock"></i>
+                <span>Your payment information is securely processed.</span>
               </div>
             }
-          </div>
-        </div>
 
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Payment</h5>
-
-            <button class="btn btn-primary" [class.d-none]="paymentReady()" (click)="preparePayment()" [disabled]="loading()">
+            <button
+              class="checkout-primary-btn w-100"
+              [class.d-none]="paymentReady()"
+              (click)="preparePayment()"
+              [disabled]="loading()"
+            >
               @if (loading()) {
                 <span class="spinner-border spinner-border-sm me-2"></span>
               }
+
+              <i class="fa-solid fa-arrow-right me-2"></i>
               Continue to Payment
             </button>
 
-            <!-- Always in the DOM (never inside @if) so it exists before Stripe tries to mount into it. -->
-            <div id="payment-element" class="mb-3" [class.d-none]="!paymentReady()"></div>
+            <!-- Stripe mount point -->
+            <div
+              id="payment-element"
+              class="payment-element-container"
+              [class.d-none]="!paymentReady()"
+            ></div>
 
             @if (paymentReady()) {
-              <button class="btn btn-success w-100" (click)="payAndPlaceOrder()" [disabled]="loading()">
+              <button
+                class="checkout-pay-btn w-100"
+                (click)="payAndPlaceOrder()"
+                [disabled]="loading()"
+              >
                 @if (loading()) {
                   <span class="spinner-border spinner-border-sm me-2"></span>
                 }
+
+                <i class="fa-solid fa-lock me-2"></i>
                 Pay {{ total | currency }}
               </button>
             }
 
             @if (errorMessage()) {
-              <div class="alert alert-danger mt-3 mb-0">{{ errorMessage() }}</div>
-            }
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-5">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Order Summary</h5>
-            @for (item of basket.basket()?.items; track item.id) {
-              <div class="d-flex justify-content-between small mb-2">
-                <span>{{ item.productName }} &times; {{ item.quantity }}</span>
-                <span>{{ item.price * item.quantity | currency }}</span>
+              <div class="checkout-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>{{ errorMessage() }}</span>
               </div>
             }
-            <hr />
-            <div class="d-flex justify-content-between mb-1">
-              <span class="text-muted">Subtotal</span>
-              <span>{{ basket.subTotal() | currency }}</span>
-            </div>
-            <div class="d-flex justify-content-between mb-1">
-              <span class="text-muted">Delivery</span>
-              <span>{{ (selectedDeliveryMethod?.cost ?? 0) | currency }}</span>
-            </div>
-            <hr />
-            <div class="d-flex justify-content-between fs-5 fw-bold">
-              <span>Total</span>
-              <span>{{ total | currency }}</span>
-            </div>
+
           </div>
-        </div>
+        </section>
+
       </div>
+
+      <!-- Order Summary -->
+      <div class="col-lg-5">
+
+        <aside class="order-summary-card">
+
+          <div class="order-summary-header">
+            <div>
+              <span class="summary-eyebrow">Your order</span>
+              <h2>Order Summary</h2>
+            </div>
+
+            <span class="summary-items-count">
+              {{ basket.basket()?.items?.length }} items
+            </span>
+          </div>
+
+          <div class="summary-products">
+
+            @for (item of basket.basket()?.items; track item.id) {
+
+              <div class="summary-product">
+                <div class="summary-product-image">
+                  <img
+                    [src]="item.pictureUrl"
+                    [alt]="item.productName"
+                  />
+                </div>
+
+                <div class="summary-product-info">
+                  <h3>{{ item.productName }}</h3>
+                  <span>Quantity: {{ item.quantity }}</span>
+                </div>
+
+                <strong>
+                  {{ item.price * item.quantity | currency }}
+                </strong>
+              </div>
+
+            }
+
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <strong>{{ basket.subTotal() | currency }}</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Delivery</span>
+            <strong>
+              {{ (selectedDeliveryMethod?.cost ?? 0) | currency }}
+            </strong>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-total">
+            <span>Total</span>
+            <strong>{{ total | currency }}</strong>
+          </div>
+
+          <div class="secure-checkout-note">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Secure and encrypted checkout</span>
+          </div>
+
+        </aside>
+
+      </div>
+
     </div>
+
   }
+
 </div>

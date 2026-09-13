@@ -1,63 +1,192 @@
-<div class="container py-5">
-  <h2 class="mb-4">Your Cart</h2>
+<div class="cart-page">
+  <div class="container">
 
-  @if (basket.basket(); as b) {
-    @if (b.items.length > 0) {
-      <div class="table-responsive">
-        <table class="table align-middle">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Product</th>
-              <th>Price</th>
-              <th style="width: 140px;">Quantity</th>
-              <th class="text-end">Total</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (item of b.items; track item.id) {
-              <tr>
-                <td>
-                  <img [src]="item.pictureUrl" [alt]="item.productName" style="width: 60px; height: 60px; object-fit: contain;" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27200%27%20height%3D%27200%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%23f3f4f6%27/%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20font-family%3D%27sans-serif%27%20font-size%3D%2714%27%20fill%3D%27%239ca3af%27%20text-anchor%3D%27middle%27%20dy%3D%27.3em%27%3ENo%20Image%3C/text%3E%3C/svg%3E'" />
-                </td>
-                <td>{{ item.productName }}</td>
-                <td>{{ item.price | currency }}</td>
-                <td>
-                  <input type="number" min="1" class="form-control" [value]="item.quantity"
-                         (change)="updateQuantity(item, $any($event.target).value)" />
-                </td>
-                <td class="text-end fw-semibold">{{ item.price * item.quantity | currency }}</td>
-                <td>
-                  <button class="btn btn-sm btn-outline-danger" (click)="removeItem(item)">
+    <!-- Header -->
+    <div class="cart-header">
+      <div>
+        <div class="cart-eyebrow">SHOPPING BAG</div>
+        <h1>Your Cart</h1>
+        <p>Review your items before proceeding to checkout.</p>
+      </div>
+
+      <a routerLink="/products" class="cart-continue-btn">
+        <i class="fas fa-arrow-left"></i>
+        Continue Shopping
+      </a>
+    </div>
+
+    @if (basket.basket(); as b) {
+
+      @if (b.items.length > 0) {
+
+        <div class="cart-layout">
+
+          <!-- Cart Items -->
+          <div class="cart-items-card">
+
+            <div class="cart-items-header">
+              <div>
+                <h3>Cart Items</h3>
+                <span>{{ b.items.length }} item{{ b.items.length !== 1 ? 's' : '' }}</span>
+              </div>
+            </div>
+
+            <div class="cart-items-list">
+
+              @for (item of b.items; track item.id) {
+
+                <div class="cart-item">
+
+                  <!-- Product Image -->
+                  <div class="cart-product-image-wrapper">
+                    <img
+                      [src]="item.pictureUrl"
+                      [alt]="item.productName"
+                      class="cart-product-image"
+                      onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27200%27%20height%3D%27200%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%23f5f5f6%27/%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20font-family%3D%27sans-serif%27%20font-size%3D%2714%27%20fill%3D%27%239ca3af%27%20text-anchor%3D%27middle%27%20dy%3D%27.3em%27%3ENo%20Image%3C/text%3E%3C/svg%3E'"
+                    />
+                  </div>
+
+                  <!-- Product Info -->
+                  <div class="cart-product-info">
+
+                    <h4>{{ item.productName }}</h4>
+
+                    <span class="cart-product-price">
+                      {{ item.price | currency }}
+                    </span>
+
+                    <div class="cart-mobile-total">
+                      {{ item.price * item.quantity | currency }}
+                    </div>
+
+                  </div>
+
+                  <!-- Quantity -->
+                  <div class="cart-quantity-section">
+                    <span class="cart-label">Quantity</span>
+
+                    <div class="cart-quantity-control">
+
+                      <!-- <button
+                        type="button"
+                        (click)="updateQuantity(item, itrem.quantity)"
+                        [disabled]="item.quantity <= 1">
+                        <i class="fas fa-minus"></i>
+                      </button> -->
+
+                      <span>{{ item.quantity }}</span>
+
+                      <!-- <button
+                        type="button"
+                        (click)="updateQuantity(item, item.quantity + 1)">
+                        <i class="fas fa-plus"></i>
+                      </button> -->
+
+                    </div>
+                  </div>
+
+                  <!-- Total -->
+                  <div class="cart-item-total">
+
+                    <span class="cart-label">Total</span>
+
+                    <strong>
+                      {{ item.price * item.quantity | currency }}
+                    </strong>
+
+                  </div>
+
+                  <!-- Remove -->
+                  <button
+                    type="button"
+                    class="cart-remove-btn"
+                    title="Remove item"
+                    (click)="removeItem(item)">
                     <i class="fas fa-trash"></i>
                   </button>
-                </td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </div>
 
-      <div class="d-flex justify-content-end mt-4">
-        <div class="card shadow-sm" style="max-width: 320px; width: 100%;">
-          <div class="card-body">
-            <div class="d-flex justify-content-between mb-2">
-              <span class="text-muted">Subtotal</span>
-              <span class="fw-semibold">{{ basket.subTotal() | currency }}</span>
+                </div>
+
+              }
+
             </div>
-            <a routerLink="/checkout" class="btn btn-primary w-100 mt-2">
-              Proceed to Checkout <i class="fas fa-arrow-right ms-1"></i>
-            </a>
+
           </div>
+
+          <!-- Summary -->
+          <aside class="cart-summary-card">
+
+            <div class="cart-summary-header">
+              <span>Order Summary</span>
+              <i class="fas fa-receipt"></i>
+            </div>
+
+            <div class="cart-summary-body">
+
+              <div class="cart-summary-row">
+                <span>Subtotal</span>
+                <strong>{{ basket.subTotal() | currency }}</strong>
+              </div>
+
+              <div class="cart-summary-row cart-summary-muted">
+                <span>Shipping</span>
+                <span>Calculated at checkout</span>
+              </div>
+
+              <div class="cart-summary-divider"></div>
+
+              <div class="cart-summary-total">
+                <span>Total</span>
+                <strong>{{ basket.subTotal() | currency }}</strong>
+              </div>
+
+              <a
+                routerLink="/checkout"
+                class="cart-checkout-btn">
+
+                Proceed to Checkout
+
+                <i class="fas fa-arrow-right"></i>
+
+              </a>
+
+              <div class="cart-secure-note">
+                <i class="fas fa-lock"></i>
+                Secure checkout
+              </div>
+
+            </div>
+
+          </aside>
+
         </div>
-      </div>
-    } @else {
-      <div class="text-center text-muted py-5">
-        <i class="fas fa-cart-shopping fa-2x mb-2"></i>
-        <p>Your cart is empty.</p>
-        <a routerLink="/products" class="btn btn-primary">Start Shopping</a>
-      </div>
+
+      } @else {
+
+        <!-- Empty Cart -->
+        <div class="cart-empty">
+
+          <div class="cart-empty-icon">
+            <i class="fas fa-cart-shopping"></i>
+          </div>
+
+          <h2>Your cart is empty</h2>
+
+          <p>
+            Looks like you haven't added anything to your cart yet.
+          </p>
+
+          <a routerLink="/products" class="cart-empty-btn">
+            Start Shopping
+            <i class="fas fa-arrow-right"></i>
+          </a>
+
+        </div>
+
+      }
+
     }
-  }
+
+  </div>
 </div>

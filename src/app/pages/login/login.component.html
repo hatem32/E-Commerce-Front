@@ -1,34 +1,173 @@
-<div class="container py-5" style="max-width: 420px;">
-  <div class="card shadow-sm">
-    <div class="card-body p-4">
-      <h3 class="text-center mb-4"><i class="fas fa-bag-shopping me-2"></i>Login</h3>
+<div class="auth-page">
 
-      <form (ngSubmit)="submit()">
-        <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" [(ngModel)]="credentials.email" name="email" required />
+  <div class="auth-container">
+
+    <!-- Left Visual Side -->
+    <div class="auth-visual">
+
+      <div class="auth-visual-content">
+
+        <div class="auth-brand">
+          Orbit<span>+</span>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" [(ngModel)]="credentials.password" name="password" required />
+        <span class="auth-eyebrow">
+          Welcome Back
+        </span>
+
+        <h1>
+          Good to see you
+          <br />
+          <span>again.</span>
+        </h1>
+
+        <p>
+          Sign in to track your orders, manage your wishlist,
+          and pick up right where you left off.
+        </p>
+
+        <div class="auth-benefits">
+
+          <div class="auth-benefit">
+            <span class="auth-benefit-icon">
+              <i class="fa-solid fa-box"></i>
+            </span>
+            <span>Track your orders</span>
+          </div>
+
+          <div class="auth-benefit">
+            <span class="auth-benefit-icon">
+              <i class="fa-regular fa-heart"></i>
+            </span>
+            <span>Save your favorite products</span>
+          </div>
+
+          <div class="auth-benefit">
+            <span class="auth-benefit-icon">
+              <i class="fa-solid fa-bolt"></i>
+            </span>
+            <span>Faster checkout</span>
+          </div>
+
         </div>
 
-        @if (errorMessage()) {
-          <div class="alert alert-danger py-2">{{ errorMessage() }}</div>
-        }
-
-        <button type="submit" class="btn btn-primary w-100" [disabled]="loading()">
-          @if (loading()) {
-            <span class="spinner-border spinner-border-sm me-2"></span>
-          }
-          Login
-        </button>
-      </form>
-
-      <div class="text-center mt-3 small">
-        Don't have an account? <a routerLink="/register">Create one</a>
       </div>
+
     </div>
+
+    <!-- Form Side -->
+    <div class="auth-form-side">
+
+      <div class="auth-form-container">
+
+        <div class="auth-mobile-brand">
+          Orbit<span>+</span>
+        </div>
+
+        <div class="auth-heading">
+          <h2>Welcome back</h2>
+          <p>Login to your account to continue.</p>
+        </div>
+
+        <form (ngSubmit)="submit()" class="auth-form">
+
+          <!-- Email -->
+          <div class="auth-field">
+
+            <label for="login-email">
+              Email
+            </label>
+
+            <div class="auth-input-wrapper">
+
+              <i class="fa-regular fa-envelope"></i>
+
+              <input
+                id="login-email"
+                type="email"
+                [(ngModel)]="credentials.email"
+                name="email"
+                placeholder="Enter your email"
+                autocomplete="email"
+                required
+              />
+
+            </div>
+
+          </div>
+
+          <!-- Password -->
+          <div class="auth-field">
+
+            <div class="auth-label-row">
+              <label for="login-password">
+                Password
+              </label>
+            </div>
+
+            <div class="auth-input-wrapper">
+
+              <i class="fa-solid fa-lock"></i>
+
+              <input
+                id="login-password"
+                type="password"
+                [(ngModel)]="credentials.password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              />
+
+            </div>
+
+          </div>
+
+          <!-- Error -->
+          @if (errorMessage()) {
+
+            <div class="auth-error">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <span>{{ errorMessage() }}</span>
+            </div>
+
+          }
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            class="auth-submit-btn"
+            [disabled]="loading()"
+          >
+
+            @if (loading()) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              Logging in...
+            } @else {
+              Login
+              <i class="fa-solid fa-arrow-right"></i>
+            }
+
+          </button>
+
+        </form>
+
+        <div class="auth-switch">
+          Don't have an account?
+          <a routerLink="/register">
+            Create one
+          </a>
+        </div>
+
+        <div class="auth-security">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Your account is protected and secure.</span>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
+
 </div>

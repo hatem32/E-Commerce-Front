@@ -31,7 +31,7 @@ export class VerifyOtpComponent {
     this.auth.verifyOtp({ email: this.email, otp: this.otp }).subscribe({
       next: () => {
         this.loading.set(false);
-        this.notify.success('Email verified! Welcome to E-Shop.');
+        this.notify.success('Email verified! Welcome to Orbit+.');
         this.auth.redirectAfterLogin();
       },
       error: (err) => {

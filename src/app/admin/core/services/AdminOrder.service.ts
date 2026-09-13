@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { OrderToReturnDto } from '../../../core/models/order.model';
+import { AdminStatsDto } from '../models/stats.model';
 
 @Injectable({ providedIn: 'root' })
 export class AdminOrderService {
@@ -11,6 +12,10 @@ export class AdminOrderService {
 
   getAllOrders(): Observable<OrderToReturnDto[]> {
     return this.http.get<OrderToReturnDto[]>(`${this.baseUrl}/admin/all`);
+  }
+
+  getStats(): Observable<AdminStatsDto> {
+    return this.http.get<AdminStatsDto>(`${this.baseUrl}/admin/stats`);
   }
 
   getOrder(id: string): Observable<OrderToReturnDto> {

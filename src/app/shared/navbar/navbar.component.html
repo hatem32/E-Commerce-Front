@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
   <div class="container">
     <a class="navbar-brand fw-bold" routerLink="/">
-      <i class="fas fa-bag-shopping me-2"></i>E-Shop
+      Orbit<span class="brand-plus">+</span>
     </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
@@ -33,6 +33,14 @@
       </ul>
 
       <ul class="navbar-nav align-items-lg-center">
+        <li class="nav-item me-2">
+          <button type="button" class="theme-toggle-btn" (click)="theme.toggle()"
+                  [attr.aria-label]="theme.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+                  [attr.title]="theme.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">
+            <i class="fas" [class.fa-moon]="theme.theme() === 'light'" [class.fa-sun]="theme.theme() === 'dark'"></i>
+          </button>
+        </li>
+
         @if (auth.isLoggedIn()) {
           <li class="nav-item me-2">
             <a class="btn btn-outline-light position-relative" routerLink="/wishlist">

@@ -1,99 +1,323 @@
 @if (order(); as o) {
-  <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2 class="mb-0">Order #{{ o.id.substring(0, 8) }}</h2>
-      <a routerLink="/orders" class="btn btn-outline-secondary">
-        <i class="fas fa-arrow-left me-1"></i> Back to Orders
-      </a>
+
+  <div class="order-details-page container py-5">
+
+    <!-- Header -->
+    <div class="order-details-header">
+
+      <div>
+        <a routerLink="/orders" class="back-orders-btn">
+          <i class="fa-solid fa-arrow-left"></i>
+          Back to Orders
+        </a>
+
+        <span class="orders-eyebrow mt-3">
+          Order Details
+        </span>
+
+        <h1>
+          Order #{{ o.id.substring(0, 8) }}
+        </h1>
+
+        <p>
+          Placed on {{ o.orderDate | date: 'medium' }}
+        </p>
+      </div>
+
+      <span
+        class="order-status large"
+        [class.status-success]="o.status === 'Completed' || o.status === 'Paid'"
+        [class.status-warning]="o.status === 'Pending'"
+        [class.status-danger]="o.status === 'Cancelled'"
+      >
+        <span class="status-dot"></span>
+        {{ o.status }}
+      </span>
+
     </div>
 
-    <div class="alert alert-success" role="alert">
-      <i class="fas fa-circle-check me-2"></i>Thank you! Your order has been placed successfully.
+
+    <!-- Success Message -->
+    <div class="order-success-message">
+
+      <div class="success-icon">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+
+      <div>
+        <strong>Thank you for your order!</strong>
+        <p>
+          Your order has been placed successfully.
+          We'll keep you updated about its progress.
+        </p>
+      </div>
+
     </div>
+
 
     <div class="row g-4">
+
+      <!-- Main Content -->
       <div class="col-lg-8">
-        <div class="card shadow-sm mb-4">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Items</h5>
-            <table class="table align-middle mb-0">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Product</th>
-                  <th>Price</th>
-                  <th>Qty</th>
-                  <th class="text-end">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (item of o.items; track item.productId) {
-                  <tr>
-                    <td>
-                      <img [src]="item.pictureUrl" [alt]="item.productName" style="width: 50px; height: 50px; object-fit: contain;" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27200%27%20height%3D%27200%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%23f3f4f6%27/%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20font-family%3D%27sans-serif%27%20font-size%3D%2714%27%20fill%3D%27%239ca3af%27%20text-anchor%3D%27middle%27%20dy%3D%27.3em%27%3ENo%20Image%3C/text%3E%3C/svg%3E'" />
-                    </td>
-                    <td>{{ item.productName }}</td>
-                    <td>{{ item.price | currency }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td class="text-end">{{ item.price * item.quantity | currency }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
 
-            <hr />
+        <!-- Items -->
+        <section class="order-details-card">
 
-            <div class="d-flex justify-content-end">
-              <table class="table table-borderless table-sm mb-0" style="max-width: 280px;">
-                <tbody>
-                  <tr>
-                    <td class="text-muted">Subtotal</td>
-                    <td class="text-end">{{ o.subTotal | currency }}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-muted">Delivery ({{ o.deliveryMethod }})</td>
-                    <td class="text-end">{{ o.deliveryCost | currency }}</td>
-                  </tr>
-                  <tr class="fw-bold fs-5">
-                    <td>Total</td>
-                    <td class="text-end">{{ o.total | currency }}</td>
-                  </tr>
-                </tbody>
-              </table>
+          <div class="order-card-header">
+
+            <div>
+              <span class="card-eyebrow">Your purchase</span>
+              <h2>Order Items</h2>
             </div>
-          </div>
-        </div>
 
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Shipping Address</h5>
-            <p class="mb-1 fw-semibold">{{ o.shipToAddress.firstName }} {{ o.shipToAddress.lastName }}</p>
-            <p class="mb-0 text-muted">{{ o.shipToAddress.street }}<br />{{ o.shipToAddress.city }}, {{ o.shipToAddress.country }}</p>
+            <span class="order-items-badge">
+              {{ o.items.length }}
+              {{ o.items.length === 1 ? 'item' : 'items' }}
+            </span>
+
           </div>
-        </div>
+
+
+          <div class="order-items-list">
+
+            @for (item of o.items; track item.productId) {
+
+              <div class="order-detail-item">
+
+                <div class="order-detail-image">
+
+                  <img
+                    [src]="item.pictureUrl"
+                    [alt]="item.productName"
+                    onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27200%27%20height%3D%27200%27%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20fill%3D%27%23f3f4f6%27/%3E%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20font-family%3D%27sans-serif%27%20font-size%3D%2714%27%20fill%3D%27%239ca3af%27%20text-anchor%3D%27middle%27%20dy%3D%27.3em%27%3ENo%20Image%3C/text%3E%3C/svg%3E'"
+                  />
+
+                </div>
+
+
+                <div class="order-detail-product">
+
+                  <h3>{{ item.productName }}</h3>
+
+                  <span>
+                    {{ item.price | currency }} each
+                  </span>
+
+                </div>
+
+
+                <div class="order-detail-quantity">
+                  <span>Qty</span>
+                  <strong>{{ item.quantity }}</strong>
+                </div>
+
+
+                <div class="order-detail-price">
+                  {{ item.price * item.quantity | currency }}
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- Totals -->
+          <div class="order-totals">
+
+            <div class="order-total-row">
+              <span>Subtotal</span>
+              <strong>{{ o.subTotal | currency }}</strong>
+            </div>
+
+            <div class="order-total-row">
+              <span>
+                Delivery
+                <small>({{ o.deliveryMethod }})</small>
+              </span>
+
+              <strong>{{ o.deliveryCost | currency }}</strong>
+            </div>
+
+            <div class="order-total-divider"></div>
+
+            <div class="order-grand-total">
+              <span>Total</span>
+              <strong>{{ o.total | currency }}</strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- Shipping Address -->
+        <section class="order-details-card shipping-card">
+
+          <div class="order-card-header">
+
+            <div>
+              <span class="card-eyebrow">Delivery</span>
+              <h2>Shipping Address</h2>
+            </div>
+
+            <div class="shipping-icon">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+
+          </div>
+
+
+          <div class="shipping-address">
+
+            <div class="shipping-name">
+              <i class="fa-regular fa-user"></i>
+              <strong>
+                {{ o.shipToAddress.firstName }}
+                {{ o.shipToAddress.lastName }}
+              </strong>
+            </div>
+
+            <div class="shipping-line">
+              <i class="fa-solid fa-location-dot"></i>
+
+              <span>
+                {{ o.shipToAddress.street }}
+                <br />
+                {{ o.shipToAddress.city }},
+                {{ o.shipToAddress.country }}
+              </span>
+            </div>
+
+          </div>
+
+        </section>
+
       </div>
 
+
+      <!-- Sidebar -->
       <div class="col-lg-4">
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title mb-3">Order Info</h5>
-            <table class="table table-sm table-borderless mb-0">
-              <tbody>
-                <tr>
-                  <td class="text-muted">Date</td>
-                  <td>{{ o.orderDate | date: 'medium' }}</td>
-                </tr>
-                <tr>
-                  <td class="text-muted">Status</td>
-                  <td><span class="badge bg-secondary">{{ o.status }}</span></td>
-                </tr>
-              </tbody>
-            </table>
+
+        <div class="order-sidebar">
+
+          <!-- Order Info -->
+          <section class="order-details-card">
+
+            <div class="order-card-header">
+              <div>
+                <span class="card-eyebrow">Overview</span>
+                <h2>Order Information</h2>
+              </div>
+            </div>
+
+
+            <div class="order-info-list">
+
+              <div class="order-info-row">
+
+                <span>
+                  <i class="fa-regular fa-calendar"></i>
+                  Date
+                </span>
+
+                <strong>
+                  {{ o.orderDate | date: 'mediumDate' }}
+                </strong>
+
+              </div>
+
+
+              <div class="order-info-row">
+
+                <span>
+                  <i class="fa-regular fa-clock"></i>
+                  Time
+                </span>
+
+                <strong>
+                  {{ o.orderDate | date: 'shortTime' }}
+                </strong>
+
+              </div>
+
+
+              <div class="order-info-row">
+
+                <span>
+                  <i class="fa-solid fa-truck"></i>
+                  Delivery
+                </span>
+
+                <strong>
+                  {{ o.deliveryMethod }}
+                </strong>
+
+              </div>
+
+
+              <div class="order-info-row">
+
+                <span>
+                  <i class="fa-solid fa-box"></i>
+                  Items
+                </span>
+
+                <strong>
+                  {{ o.items.length }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- Secure -->
+          <div class="order-secure-box">
+
+            <div class="order-secure-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+              <strong>Secure Order</strong>
+              <p>
+                Your order information is safely stored.
+              </p>
+            </div>
+
           </div>
+
+
+          <a
+            routerLink="/products"
+            class="order-continue-btn"
+          >
+            <i class="fa-solid fa-bag-shopping"></i>
+            Continue Shopping
+          </a>
+
         </div>
+
       </div>
+
     </div>
+
   </div>
+
 } @else {
-  <div class="container py-5 text-center text-muted">Loading...</div>
+
+  <div class="order-loading container py-5">
+
+    <div class="loading-spinner">
+      <span class="spinner-border"></span>
+    </div>
+
+    <p>Loading order details...</p>
+
+  </div>
+
 }

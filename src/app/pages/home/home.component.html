@@ -1,55 +1,99 @@
 <!-- Hero -->
-<section class="hero-section py-5">
-  <div class="container py-5 position-relative">
-    <div class="row align-items-center">
-      <div class="col-lg-8">
-        <div class="hero-eyebrow mb-2">New Season, New Finds</div>
-        <h1 class="fw-bold mb-3">Everything you need,<br />curated with care.</h1>
-        <p class="lead mb-4" style="max-width: 560px;">
-          From everyday essentials to standout pieces - shop a handpicked catalog
-          with fast delivery and secure checkout, every time.
-        </p>
-        <div class="d-flex flex-wrap gap-3">
-          <a routerLink="/products" class="btn btn-light btn-lg px-4">
-            <i class="fas fa-bag-shopping me-2"></i>Shop Now
-          </a>
-          <a routerLink="/categories" class="btn btn-outline-light btn-lg px-4">
-            Browse Categories
-          </a>
+<section class="hero-wrapper">
+  <div class="container">
+    <div class="hero-section">
+
+      <img
+        src="images/hero.avif"
+        alt="Discover our latest collection"
+        class="hero-bg-image"
+      />
+
+      <div class="hero-overlay"></div>
+
+      <div class="hero-content">
+        <div class="row align-items-center">
+          <div class="col-lg-7">
+            <div class="hero-eyebrow mb-3">
+              New arrivals
+            </div>
+
+            <h1 class="fw-bold mb-3">
+              Everything you love.<br />
+              <span>In one place.</span>
+            </h1>
+
+            <p class="lead mb-4">
+              Discover carefully selected products for your everyday life.
+              Simple shopping, trusted quality, and a collection made for you.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3">
+              <a routerLink="/products" class="btn btn-light btn-lg px-4">
+                Explore Collection
+                <i class="fas fa-arrow-right ms-2"></i>
+              </a>
+
+              <a routerLink="/products" class="btn btn-outline-light btn-lg px-4">
+                Shop Now
+              </a>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
+<br />
 
+
+<!-- Trust strip -->
 <!-- Trust strip -->
 <section class="trust-strip py-4">
   <div class="container">
-    <div class="row g-3">
+    <div class="row g-4 justify-content-center">
+
       <div class="col-6 col-md-3">
         <div class="trust-item">
           <i class="fas fa-truck-fast"></i>
-          <div><strong>Fast Delivery</strong><span>2-5 business days</span></div>
+          <div>
+            <strong>Fast Delivery</strong>
+            <span>Quick & reliable shipping</span>
+          </div>
         </div>
       </div>
+
       <div class="col-6 col-md-3">
         <div class="trust-item">
-          <i class="fas fa-lock"></i>
-          <div><strong>Secure Payment</strong><span>Powered by Stripe</span></div>
+          <i class="fas fa-shield-halved"></i>
+          <div>
+            <strong>Secure Payment</strong>
+            <span>100% secure checkout</span>
+          </div>
         </div>
       </div>
+
       <div class="col-6 col-md-3">
         <div class="trust-item">
           <i class="fas fa-rotate-left"></i>
-          <div><strong>Easy Returns</strong><span>Hassle-free process</span></div>
+          <div>
+            <strong>Easy Returns</strong>
+            <span>Shop with confidence</span>
+          </div>
         </div>
       </div>
+
       <div class="col-6 col-md-3">
         <div class="trust-item">
           <i class="fas fa-headset"></i>
-          <div><strong>24/7 Support</strong><span>We're here to help</span></div>
+          <div>
+            <strong>We're Here to Help</strong>
+            <span>Friendly customer support</span>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -110,13 +154,43 @@
 </div>
 
 <!-- Newsletter -->
+<!-- Newsletter -->
 <div class="container pb-5">
-  <div class="newsletter-section p-4 p-md-5 text-center">
-    <h3 class="fw-bold mb-2">Get 10% off your first order</h3>
-    <p class="mb-4" style="opacity: 0.85;">Join our newsletter for deals, drops, and new arrivals.</p>
-    <form class="d-flex justify-content-center" style="max-width: 420px; margin: 0 auto;" (ngSubmit)="subscribeNewsletter()">
-      <input type="email" class="form-control" placeholder="you&#64;example.com" [(ngModel)]="newsletterEmail" name="newsletterEmail" required />
-      <button type="submit" class="btn btn-primary px-4">Subscribe</button>
-    </form>
+  <div class="newsletter-section p-4 p-md-5">
+    <div class="row align-items-center g-4">
+
+      <div class="col-lg-7">
+        <div class="eyebrow mb-2">Stay in the loop</div>
+
+        <h3 class="fw-bold mb-2">
+          Discover what's next.
+        </h3>
+
+        <p class="mb-0">
+          Get updates on new arrivals, exclusive offers, and more.
+        </p>
+      </div>
+
+      <div class="col-lg-5">
+        <form
+          class="d-flex"
+          (ngSubmit)="subscribeNewsletter()"
+        >
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Enter your email"
+            [(ngModel)]="newsletterEmail"
+            name="newsletterEmail"
+            required
+          />
+
+          <button type="submit" class="btn btn-primary px-4">
+            Join
+          </button>
+        </form>
+      </div>
+
+    </div>
   </div>
 </div>

@@ -1,41 +1,108 @@
-<div class="container py-5" style="max-width: 440px;">
-  <div class="admin-card text-center">
-    <i class="fas fa-envelope-circle-check fa-2x text-primary mb-3"></i>
-    <h3 class="mb-2">Verify your email</h3>
-    <p class="text-muted mb-4">
-      We sent a 6-digit code to <strong>{{ email }}</strong>. Enter it below to activate your account.
-    </p>
+<div class="verify-page">
 
-    <form (ngSubmit)="submit()">
+  <div class="verify-card">
+
+    <!-- Icon -->
+    <div class="verify-icon">
+      <i class="fas fa-envelope-circle-check"></i>
+    </div>
+
+    <!-- Heading -->
+    <div class="verify-heading">
+
+      <div class="verify-eyebrow">
+        ACCOUNT SECURITY
+      </div>
+
+      <h1>Verify your email</h1>
+
+      <p>
+        We sent a 6-digit verification code to
+        <strong>{{ email }}</strong>
+      </p>
+
+    </div>
+
+    <!-- Form -->
+    <form
+      class="verify-form"
+      (ngSubmit)="submit()">
+
+      <label for="otp">
+        Verification Code
+      </label>
+
       <input
+        id="otp"
         type="text"
         inputmode="numeric"
+        autocomplete="one-time-code"
         maxlength="6"
-        class="form-control form-control-lg text-center mb-3"
-        style="letter-spacing: 0.5em; font-weight: 700; font-size: 1.5rem;"
-        placeholder="------"
+        class="verify-otp-input"
+        placeholder="000000"
         [(ngModel)]="otp"
         name="otp"
         required
       />
 
+      <div class="verify-hint">
+        Enter the 6-digit code from your email.
+      </div>
+
       @if (errorMessage()) {
-        <div class="alert alert-danger py-2">{{ errorMessage() }}</div>
+        <div class="verify-error">
+          <i class="fas fa-circle-exclamation"></i>
+          <span>{{ errorMessage() }}</span>
+        </div>
       }
 
-      <button type="submit" class="btn btn-primary w-100" [disabled]="loading() || otp.length !== 6">
+      <button
+        type="submit"
+        class="verify-submit-btn"
+        [disabled]="loading() || otp.length !== 6">
+
         @if (loading()) {
-          <span class="spinner-border spinner-border-sm me-2"></span>
+          <span class="spinner-border spinner-border-sm"></span>
+          Verifying...
+        } @else {
+          Verify &amp; Continue
+          <i class="fas fa-arrow-right"></i>
         }
-        Verify &amp; Continue
+
       </button>
+
     </form>
 
-    <button type="button" class="btn btn-link mt-3" [disabled]="resending()" (click)="resend()">
-      @if (resending()) {
-        <span class="spinner-border spinner-border-sm me-2"></span>
-      }
-      Didn't get a code? Resend
-    </button>
+    <!-- Resend -->
+    <div class="verify-resend">
+
+      <span>Didn't receive the code?</span>
+
+      <button
+        type="button"
+        [disabled]="resending()"
+        (click)="resend()">
+
+        @if (resending()) {
+          <span class="spinner-border spinner-border-sm"></span>
+          Sending...
+        } @else {
+          Resend code
+        }
+
+      </button>
+
+    </div>
+
+    <!-- Security -->
+    <div class="verify-security">
+      <i class="fas fa-shield-halved"></i>
+
+      <span>
+        Your verification code is secure and will only be used to verify your account.
+      </span>
+    </div>
+
   </div>
+
 </div>

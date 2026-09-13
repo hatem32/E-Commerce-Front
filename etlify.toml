@@ -1,0 +1,13 @@
+# Place this file at the ROOT of your Angular project (next to package.json,
+# NOT inside src/). Tells Netlify to serve index.html for every route, so
+# Angular's client-side router handles paths like /products/5 correctly
+# instead of Netlify returning a 404 on refresh.
+
+[build]
+  command = "npm run build -- --configuration production"
+  publish = "dist/e-shop-storefront/browser"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
