@@ -57,7 +57,7 @@
           <a class="btn btn-outline-light position-relative" routerLink="/cart">
             <i class="fas fa-cart-shopping"></i>
             @if (basket.itemCount() > 0) {
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 {{ basket.itemCount() }}
               </span>
             }
