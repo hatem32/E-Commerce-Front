@@ -29,6 +29,7 @@ export class ThemeService {
     const stored = localStorage.getItem(THEME_KEY);
     if (stored === 'light' || stored === 'dark') return stored;
 
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Always start in light mode unless the visitor already chose dark before.
+    return 'light';
   }
 }
